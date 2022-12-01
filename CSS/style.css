@@ -4,4 +4,24 @@
     box-sizing: border-box;
   }
 
-  
+.show {
+    display: flex;
+}
+
+.container {
+    padding: 15%;
+    flex-direction: column;
+    width: 80%;
+    margin: auto;
+}
+.btn {
+    margin-top: 3%;
+    padding: 3%;
+    border-radius: 5%;
+}
+.welcome{
+    align-items: center;
+    text-align: center;
+    border: solid green;
+
+}

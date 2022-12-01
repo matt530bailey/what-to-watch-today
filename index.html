@@ -9,8 +9,6 @@
     href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="./assets/CSS/style.css" />
     <title>Movies For You</title>
-    
-    <title>Document</title>
 </head>
 <body>
     <nav class="navbar">
@@ -35,12 +33,15 @@
           </div>
         </div>
       </nav>
-      
-      <section class="hero is-link is-fullheight-with-navbar">
-        <div class="hero-body">
-          <h1 class="title">Pick A Movie for You</h1>
-          <button class="button">Let's Start</button>
+      <div id="container-group" class="show">
+        <div class="container welcome">
+            <h1>Movie For You</h1>
+            <p>Press Start to find the best movie for your mood</p>
+            <button class="start btn" id="start-game">Start Quiz</button>
         </div>
+    </div>
+
+        
       </section>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
