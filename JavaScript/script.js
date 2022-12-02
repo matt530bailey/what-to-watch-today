@@ -70,6 +70,7 @@ function generateInfo(movieData) {
     // getting movie info from TMDB API and save in an object and local storage
 
 
+
     movieInfo = {
         title: movieData.title,
         overview: movieData.overview,
@@ -106,5 +107,56 @@ function createCardComponents(movieData) {
 
 }
 
+var questions = [
+    {
+        question: 'How are you feeling today?',
+        answers: [
+            { text: 'Happy' },
+            { text: 'Neutral' },
+            { text: 'Sad' }
 
+        ]
+    },
+    {
+        question: 'What is the occation?',
+        answers: [
+            { text: 'Alone time' },
+            { text: 'On a date' },
+            { text: 'With friends' },
+            {text: 'With family'}
+        ]
+    },
+    {
+        question: 'What genre would you like?',
+        answers: [
+            { text: 'Action' },
+            { text: 'Comedy' },
+            { text: 'Drama' },
+            { text: 'Fantasy' },
+            { text: 'Horror' },
+            { text: 'Mystery' },
+            { text: 'Romance' },
+            { text: 'Thriller' },
+            { text: 'Western' }
+
+        ]
+    },
+    {
+        question: 'How old would you like the movie to be?',
+        answers: [
+            { text: 'One year or less' },
+            { text: 'Five years or less' },
+            { text: 'Ten years or less' },
+            { text: 'Twenty years or less' }
+        ]
+    },
+    {
+        question: 'How long would would you like the movie to be?',
+        answers: [
+            { text: 'Up to 2 hours' },
+            { text: 'Up to 3 hours' },
+            { text: 'Up to 4 hours' }
+        ]
+    }
+]
 getMovieData()

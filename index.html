@@ -15,15 +15,45 @@
 </head>
 
 <body>
+
+    <header>
+        <ul>
+            <li><a href='#'>YouTube</a></li>
+            <li><a href='#'>RottenTomatoes</a></li>
+            <li><a href='#'>IMDb</a></li>
+        </ul>
+    </header>
+    <section id="container" class="show">
+        <div class="card">
+            <h1 id="welcomeTitle"></h1>
+            <p id="intro"></p>
+            <button id="startBtn"></button>
+        </div>
+    </section>
+    <section id="questionsContainer" class="hide">
+        <div class="question">
+            <div id="question">
+                <button id="AnswerBtn"></button>
+            </div>
+        </div>
+    </section>
+    <section id="results" class="hide">
+        <div class="lastContainer">
+            <div class="results"></div>
+        </div>
+    </section>
+
     <main>
         <section class='cardContainer row'>
 
         </section>
     </main>
+    
     <!-- Compiled and minified JavaScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.js"
         integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+
     <script src="./JavaScript/script.js"></script>
 </body>
 
