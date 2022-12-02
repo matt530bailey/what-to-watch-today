@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+      <!--Import Google Icon Font-->
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +11,34 @@
     <title>Document</title>
 </head>
 <body>
+    <header>
+        <ul>
+            <li><a href='#'>YouTube</a></li>
+            <li><a href='#'>RottenTomatoes</a></li>
+            <li><a href='#'>IMDb</a></li>
+        </ul>
+    </header>
+    <section id="container" class="show">
+        <div class="card">
+            <h1 id="welcomeTitle"></h1>
+            <p id="intro"></p>
+            <button id="startBtn"></button>
+        </div>
+    </section>
+    <section id="questionsContainer" class="hide">
+        <div class="question">
+            <div id="question">
+                <button id="AnswerBtn"></button>
+            </div>
+        </div>
+    </section>
+    <section id="results" class="hide">
+        <div class="lastContainer">
+            <div class="results"></div>
+        </div>
+    </section>
+     <!--JavaScript at end of body for optimized loading-->
+     <script type="text/javascript" src="js/materialize.min.js"></script> 
     <script src="./JavaScript/script.js"></script>
 </body>
 </html>

@@ -66,9 +66,17 @@ function generateInfo(movieData) {
         localStorage.setItem('movie_' + [i], movieInfoString);
         console.log(movieInfo)
         var movieCardEl = document.createElement('div');
-        movieCardEl.setAttribute('class', 'movie-card');
+        movieCardEl.setAttribute('class', 'movie-card row');
         movieCardEl.style.border = '1px solid black';
         movieCardEl.style.display = 'block';
+        var cardcolumEl = document.createElement('div');
+        cardcolumEl.setAttribute('class', 'col s12 m7');
+        movieCardEl.appendChild.cardcolumEl
+        var moviePosterEl = document.createElement('div');
+        moviePosterEl.setAttribute('class', 'card');
+        cardcolumEl.appendChild.moviePosterEl;
+        var movieImageEl = document.createElement('div');
+        movieImageEl.setAttribute('')
 
         if (!movieInfo.posterPath) {
             console.log('No poster found');
@@ -87,15 +95,15 @@ function generateInfo(movieData) {
         movieInfoEl.setAttribute('class', 'movie-info');
         movieInfoEl.setAttribute('float', 'left');
         // create h2 for movie title
-        var movieTitleEl = document.createElement('h2');
-        movieTitleEl.setAttribute('class', 'movie-title');
+        var movieTitleEl = document.createElement('span');
+        movieTitleEl.setAttribute('class', 'movie-title card-title');
         movieTitleEl.innerHTML = movieInfo.title;
-        movieInfoEl.appendChild(movieTitleEl);
+        moviePosterEl.appendChild(movieTitleEl);
         // create p for movie overview
         var movieOverviewEl = document.createElement('p');
-        movieOverviewEl.setAttribute('class', 'movie-overview');
+        movieOverviewEl.setAttribute('class', 'movie-overview card-content');
         movieOverviewEl.textContent = movieInfo.overview;
-        movieInfoEl.appendChild(movieOverviewEl);
+        moviePosterEl.appendChild(movieOverviewEl);
         // create ul for the other movie info
         var movieInfoUlEl = document.createElement('ul');
         movieInfoUlEl.setAttribute('class', 'movie-info-ul');
@@ -113,7 +121,7 @@ function generateInfo(movieData) {
         movieInfoUlEl.appendChild(runtimeEl);
         movieInfoUlEl.appendChild(ratingEl);
         movieInfoEl.appendChild(movieInfoUlEl);
-        movieInfoEl.appendChild(posterEl);
+        moviePosterEl.appendChild(posterEl);
         movieCardEl.appendChild(movieInfoEl);
         bodyEl.appendChild(movieCardEl);
 
@@ -121,5 +129,56 @@ function generateInfo(movieData) {
 
 };
 
+var questions = [
+    {
+        question: 'How are you feeling today?',
+        answers: [
+            { text: 'Happy' },
+            { text: 'Neutral' },
+            { text: 'Sad' }
 
+        ]
+    },
+    {
+        question: 'What is the occation?',
+        answers: [
+            { text: 'Alone time' },
+            { text: 'On a date' },
+            { text: 'With friends' },
+            {text: 'With family'}
+        ]
+    },
+    {
+        question: 'What genre would you like?',
+        answers: [
+            { text: 'Action' },
+            { text: 'Comedy' },
+            { text: 'Drama' },
+            { text: 'Fantasy' },
+            { text: 'Horror' },
+            { text: 'Mystery' },
+            { text: 'Romance' },
+            { text: 'Thriller' },
+            { text: 'Western' }
+
+        ]
+    },
+    {
+        question: 'How old would you like the movie to be?',
+        answers: [
+            { text: 'One year or less' },
+            { text: 'Five years or less' },
+            { text: 'Ten years or less' },
+            { text: 'Twenty years or less' }
+        ]
+    },
+    {
+        question: 'How long would would you like the movie to be?',
+        answers: [
+            { text: 'Up to 2 hours' },
+            { text: 'Up to 3 hours' },
+            { text: 'Up to 4 hours' }
+        ]
+    }
+]
 getMovieData()
