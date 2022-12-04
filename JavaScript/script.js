@@ -112,9 +112,9 @@ var questions = [
     {
         q: 'How are you feeling today?',
         a: [
-            { text: 'Happy' },
-            { text: 'Neutral' },
-            { text: 'Sad' }
+            { text: 'Happy 😃' },
+            { text: 'Neutral😑' },
+            { text: 'Sad 😟' }
 
         ]
     },
@@ -184,25 +184,30 @@ var startGame = function() {
   //Display Question with answer buttons
   function displayQuestion() {
     questionEl.text(questions[questionIndex].q)
-    
+    answerBtn.html("")
     for (var i = 0; i < questions[questionIndex].a.length; i++) {
         var btn = $("<button>")
         btn.text(questions[questionIndex].a[i].text);
-        btn.addClass( 'waves-effect waves-light btn"')
-        btn.on("click", saveToLocal)
+        btn.addClass( 'waves-effect waves-teal btn-flat"')
+        btn.on("click", selectAnswer)
         answerBtn.append(btn)
         }
     }
 
-    function saveToLocal(){
-setLocal
+    function selectAnswer(event){
+        event.preventDefault();
+        console.log(event.target)
+        btn = event.target
+        if(event.target == questions[questionIndex].a){
 
+        }else{
+            console.log("done")
+        }
+        questionIndex++
+        displayQuestion()
     }
 
-function nextQuestions(){
-    questionIndex++;
-    displayQuestion();
-}
+
 // set next question
 
 
