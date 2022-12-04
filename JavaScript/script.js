@@ -107,19 +107,21 @@ function createCardComponents(movieData) {
 
 }
 
+// adding questions
 var questions = [
     {
-        question: 'How are you feeling today?',
-        answers: [
-            { text: 'Happy' },
-            { text: 'Neutral' },
-            { text: 'Sad' }
+        q: 'How are you feeling today?',
+        a: [
+            { text: 'Happy 😃' },
+            { text: 'Neutral😑' },
+            { text: 'Sad 😟' }
 
         ]
     },
     {
-        question: 'What is the occation?',
-        answers: [
+
+        q: 'What is the occation?',
+        a: [
             { text: 'Alone time' },
             { text: 'On a date' },
             { text: 'With friends' },
@@ -127,8 +129,9 @@ var questions = [
         ]
     },
     {
-        question: 'What genre would you like?',
-        answers: [
+        q: 'What genre would you like?',
+        a: [
+
             { text: 'Action' },
             { text: 'Comedy' },
             { text: 'Drama' },
@@ -142,8 +145,8 @@ var questions = [
         ]
     },
     {
-        question: 'How old would you like the movie to be?',
-        answers: [
+        q: 'How old would you like the movie to be?',
+        a: [
             { text: 'One year or less' },
             { text: 'Five years or less' },
             { text: 'Ten years or less' },
@@ -151,12 +154,62 @@ var questions = [
         ]
     },
     {
-        question: 'How long would would you like the movie to be?',
-        answers: [
+        q: 'How long would would you like the movie to be?',
+        a: [
             { text: 'Up to 2 hours' },
             { text: 'Up to 3 hours' },
             { text: 'Up to 4 hours' }
         ]
     }
 ]
+
+var welcomeEl = $('#container')
+var questionBox = $('#questionsContainer')
+var startButton = $('#startBtn')
+var questionEl = $('#question')
+var answerBtn = $('#answer-buttons')
+var answerEl = []
+
+var questionIndex = 0
+var startGame = function() {
+    //add classes to show/hide start and quiz screen
+    welcomeEl.addClass('hide');
+    welcomeEl.removeClass('show');
+    questionBox.removeClass('hide');
+    questionBox.addClass('show');
+    displayQuestion()
+  }
+  $(startButton).on('click', startGame)
+
+  //Display Question with answer buttons
+  function displayQuestion() {
+    questionEl.text(questions[questionIndex].q)
+    answerBtn.html("")
+    for (var i = 0; i < questions[questionIndex].a.length; i++) {
+        var btn = $("<button>")
+        btn.text(questions[questionIndex].a[i].text);
+        btn.addClass( 'waves-effect waves-teal btn-flat"')
+        btn.on("click", selectAnswer)
+        answerBtn.append(btn)
+        }
+    }
+
+    function selectAnswer(event){
+        event.preventDefault();
+        console.log(event.target)
+        btn = event.target
+        if(event.target == questions[questionIndex].a){
+
+        }else{
+            console.log("done")
+        }
+        questionIndex++
+        displayQuestion()
+    }
+
+
+// set next question
+
+
+
 getMovieData()
