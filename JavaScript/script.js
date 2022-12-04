@@ -106,6 +106,7 @@ function createCardComponents(movieData) {
     `);
 
 }
+
 // adding questions
 var questions = [
     {
@@ -118,6 +119,7 @@ var questions = [
         ]
     },
     {
+
         q: 'What is the occation?',
         a: [
             { text: 'Alone time' },
@@ -129,6 +131,7 @@ var questions = [
     {
         q: 'What genre would you like?',
         a: [
+
             { text: 'Action' },
             { text: 'Comedy' },
             { text: 'Drama' },
@@ -201,6 +204,7 @@ function nextQuestions(){
     displayQuestion();
 }
 // set next question
+
 
 
 getMovieData()
