@@ -165,29 +165,44 @@ var questionBox = $('#questionsContainer')
 var startButton = $('#startBtn')
 var questionEl = $('#question')
 
+var answerEl = []
 
-
+var questionIndex = 0
 var startGame = function() {
     //add classes to show/hide start and quiz screen
     welcomeEl.addClass('hide');
     welcomeEl.removeClass('show');
     questionBox.removeClass('hide');
     questionBox.addClass('show');
+    displayQuestion()
   }
   $(startButton).on('click', startGame)
 
   //Display Question with answer buttons
-  var displayQuestion = function(index) {
-    questionEl.text(index.q)
-    for (var i = 0; i < index.choices.length; i++) {
-        var answerbutton = $('.button')
-        answerbutton.text(index.a[i].text)
-        answerbutton.addClass('btn')
-        answerbutton.addClass('answerbtn')
-        answerbutton.on("click", answerCheck)
-        ansBut.append(answerbutton)
+  function displayQuestion() {
+    questionEl.text(questions[questionIndex].q)
+    
+    for (var i = 0; i < questions[questionIndex].a.length; i++) {
+        var answerButton = $("<button>")
+        answerButton.text(questions[questionIndex].a[i].text);
+        // answerbutton.addClass('btn')
+        // answerbutton.addClass('answerbtn')
+        answerButton.on("click", saveToLocal)
+        answerButton.append(answerButton)
         }
     }
-  
+
+    function saveToLocal(){
+        this.text(questions[index].a);
+        const json0 = JSON.stringify(this);
+
+    }
+
+function nextQuestions(){
+    questionIndex++;
+    displayQuestion();
+}
+// set next question
+
 
 getMovieData()
