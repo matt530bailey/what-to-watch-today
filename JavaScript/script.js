@@ -185,8 +185,7 @@ var startGame = function() {
     for (var i = 0; i < questions[questionIndex].a.length; i++) {
         var btn = $("<button>")
         btn.text(questions[questionIndex].a[i].text);
-        // answerbutton.addClass('btn')
-        // answerbutton.addClass('answerbtn')
+        btn.addClass( 'waves-effect waves-light btn"')
         btn.on("click", saveToLocal)
         answerBtn.append(btn)
         }
