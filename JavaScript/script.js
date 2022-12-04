@@ -164,7 +164,7 @@ var welcomeEl = $('#container')
 var questionBox = $('#questionsContainer')
 var startButton = $('#startBtn')
 var questionEl = $('#question')
-
+var answerBtn = $('#answer-buttons')
 var answerEl = []
 
 var questionIndex = 0
@@ -183,18 +183,17 @@ var startGame = function() {
     questionEl.text(questions[questionIndex].q)
     
     for (var i = 0; i < questions[questionIndex].a.length; i++) {
-        var answerButton = $("<button>")
-        answerButton.text(questions[questionIndex].a[i].text);
+        var btn = $("<button>")
+        btn.text(questions[questionIndex].a[i].text);
         // answerbutton.addClass('btn')
         // answerbutton.addClass('answerbtn')
-        answerButton.on("click", saveToLocal)
-        answerButton.append(answerButton)
+        btn.on("click", saveToLocal)
+        answerBtn.append(btn)
         }
     }
 
     function saveToLocal(){
-        this.text(questions[index].a);
-        const json0 = JSON.stringify(this);
+setLocal
 
     }
 
