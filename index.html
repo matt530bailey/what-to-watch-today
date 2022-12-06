@@ -24,7 +24,7 @@
         </ul>
     </nav>
 
-    
+
     <!-- Welcome Screen -->
     <section id="container" class="show">
         <div class="card center-align">
@@ -35,7 +35,7 @@
     </section>
     <!-- questions -->
     <section id="questionsContainer" class="hide">
-        <div class="questionClass center-align"> 
+        <div class="questionClass center-align">
             <h1 id="question"> This is an Example if a Question</h1>
             <div id="answer-buttons" class="flow-text">
             </div>
@@ -50,19 +50,44 @@
     </section>
 
     <main>
+        <!-- This is a section for search results -->
         <section class='cardContainer row'>
 
         </section>
+        <!-- This is a section for modal to play trailers -->
+        <section>
+         
+            <!-- Modal Structure -->
+            <!-- <div id="modal1" style="display: none" class="card large card-panel">
+                <div class="header" style="float: right">
+                    <a href="#!" class="waves-effect btn-small waves-light red"><i class="material-icons">close</i></a>
+                </div> -->
+                <div class="modal-content">
+                    <iframe id="video-player" width="100%" height="auto" src="">
+                    </iframe>
+                </div>
+                
+            </div>
+        </section>
     </main>
-    
+
     <!-- Compiled and minified JavaScript -->
     <!-- added google api to use youtube api -->
     <script src="https://apis.google.com/js/api.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.js"
         integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script>dayjs().format()</script>
+    <script>$(document).ready(function(){
+        $('.modal').modal();
+      });</script>
     <script src="./JavaScript/script.js"></script>
 </body>
+
+
+
+
+
 
 </html>
