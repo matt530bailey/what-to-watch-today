@@ -115,8 +115,8 @@ function creatCardsFromStorage() {
 // Added a clickevent to all trailer buttons
 function addClickEvent(returnValue) {
     var trailerBtnEl = $('<button>')
-    trailerBtnEl.addClass('waves-effect waves-light btn-small trailer-btn')
-    // trailerBtnEl.attr('href', '#modal1')
+    trailerBtnEl.addClass('waves-effect waves-light btn-small trailer-btn modal-trigger')
+    trailerBtnEl.attr('href', '#modal1')
     trailerBtnEl.text('Watch trailers')
     var iconEl = $('<i>')
     iconEl.addClass('material-icons left')
@@ -124,8 +124,17 @@ function addClickEvent(returnValue) {
     trailerBtnEl.append(iconEl)
     returnValue.append(trailerBtnEl)
     returnValue.click(showYouTubeTrailer)
+
+
 }
+
+function stopVideo(){
+    console.log($('#video-player'))
+    $('#video-player')[0].contentWindow.postMessage('{"event":"command","func":"' + 'stopVideo' + '","args":""}', '*');
+}
+
 function addVideoPlayer(youtubeVideoUrl) {
+
     $("#video-player").attr('src', youtubeVideoUrl)
 }
 // Creat a function that will locate the movie title and pass it to a search in youtube API
@@ -275,7 +284,9 @@ function selectAnswer(event) {
 
 // set next question
 
-
 // excute functions
+var closeBtnEl = $('.modal-close')
+console.log(closeBtnEl)
+closeBtnEl.click(stopVideo())
 getTMDBApi()
 creatCardsFromStorage()

@@ -56,17 +56,17 @@
         </section>
         <!-- This is a section for modal to play trailers -->
         <section>
-         
+
             <!-- Modal Structure -->
-            <!-- <div id="modal1" style="display: none" class="card large card-panel">
-                <div class="header" style="float: right">
-                    <a href="#!" class="waves-effect btn-small waves-light red"><i class="material-icons">close</i></a>
-                </div> -->
+            <div id="modal1" class="modal">
+                <div class="modal-header" style="float: right">
+                    <a href="#!" class="modal-close waves-effect btn-small waves-light red"><i class="material-icons modal-close">close</i></a>
+                </div>
                 <div class="modal-content">
-                    <iframe id="video-player" width="100%" height="auto" src="">
+                    <iframe id="video-player" frameborder="0" width="100%" height="600" src="">
                     </iframe>
                 </div>
-                
+
             </div>
         </section>
     </main>
@@ -76,12 +76,17 @@
     <script src="https://apis.google.com/js/api.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.js"
         integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
     <script>dayjs().format()</script>
-    <script>$(document).ready(function(){
-        $('.modal').modal();
-      });</script>
+    <script>
+        $(document).ready(function(){
+          $('.modal').modal({
+              dismissible: false, // Modal cannot be closed by clicking anywhere outside
+            }
+          );
+          })
+        </script>
     <script src="./JavaScript/script.js"></script>
 </body>
 
