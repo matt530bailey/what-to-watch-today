@@ -1,6 +1,12 @@
 var bodyEl = document.querySelector('body');
 
-var searchFilter = "";
+var searchFilter = {
+    movieLength: "",
+    yearsToNow: "",
+    genre: "",
+    isAdult: false,
+}
+
 var localMovieData = [];
 var youtubeVideoUrl = "";
 var movieInfo = {
@@ -19,8 +25,8 @@ var movieInfo = {
 
 // get rough data from TMDB API
 var getTMDBApi = function (searchResults) {
-    searchFilter = 'trending/movie/week'
-    var getTMDBUrl ='https://api.themoviedb.org/3/' + searchFilter + '?api_key=337b93ffd45a2b68e431aed64d687099&append_to_response=videos,images'
+    var testing = 'trending/movie/week'
+    var getTMDBUrl ='https://api.themoviedb.org/3/' + testing + '?api_key=337b93ffd45a2b68e431aed64d687099&append_to_response=videos,images'
     fetch(getTMDBUrl)
         .then(function (response) {
             if (response.ok) {
