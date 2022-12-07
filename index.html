@@ -8,7 +8,8 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!--Import materialize.css-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-
+    <!--Basic CSS Styling Sheet @media-->
+    <link rel="stylesheet" href="/CSS/reset.css">
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./CSS/style.css" />
@@ -16,8 +17,8 @@
 </head>
 
 <body>
-
-    <nav class="nav-wrapper">
+    <!--FULL SCREEN NAV-->
+    <nav class="nav-extended" id='fullscreenNav'>
         <ul class="waves-effect waves-light">
             <li><a class='waves-effect waves-light btn' href='https://www.youtube.com/'>YouTube</a></li>
             <li><a class='waves-effect waves-light btn' href='https://www.rottentomatoes.com/'>RottenTomatoes</a></li>
@@ -25,6 +26,23 @@
         </ul>
     </nav>
 
+    <!--SMALL SCREEN NAV-->
+    <nav id="mobileNav">
+        <div class="nav-wrapper">
+            <a href="#" data-target="mobile-demo" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+            <ul class="right hide-on-small-and-down">
+                <li><a href='https://www.youtube.com/'></a></li>
+                <li><a href='https://www.rottentomatoes.com/'></a></li>
+                <li><a href='https://www.imdb.com/'></a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <ul class="sidenav" id="mobile-demo">
+        <li><a href='https://www.youtube.com/'>YouTube</a></li>
+        <li><a href='https://www.rottentomatoes.com/'>RottenTomatoes</a></li>
+        <li><a href='https://www.imdb.com/'>IMDb</a></li>
+    </ul>   
 
     <!-- Welcome Screen -->
     <section id="container" class = "card z-depth-5 show">
@@ -89,6 +107,7 @@
           );
           })
         </script>
+
     <script src="./JavaScript/script.js"></script>
 </body>
 

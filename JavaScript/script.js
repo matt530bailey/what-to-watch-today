@@ -23,6 +23,10 @@ var movieInfo = {
 // var movieInfoJSON = JSON.parse(localStorage.getItem("storedMovieData"));
 
 
+$(document).ready(function(){
+    $('.sidenav').sidenav();
+  });
+
 // get rough data from TMDB API
 var getTMDBApi = function (searchResults) {
     var testing = 'trending/movie/week'
