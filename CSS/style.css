@@ -1,6 +1,7 @@
 #container{
-    background-image: url(images/movie1.jpg)
-
+    background-color: red;
+    background-image: url("./images/movie1.jpg") !important;
+    z-index: 1;
 
 }
 
