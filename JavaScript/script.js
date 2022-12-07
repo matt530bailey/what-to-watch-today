@@ -45,6 +45,11 @@ var movieInfo = {
 };
 
 
+$(document).ready(function(){
+    $('.sidenav').sidenav();
+  });
+
+// get rough data from TMDB API
 var getTMDBApi = function (searchResults) {
     var testingUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=337b93ffd45a2b68e431aed64d687099&language=en-US&sort_by=popularity.desc&include_adult=' + searchResults.isAdult + '&release_date.lte=' + releaseDateBefore + '&with_runtime.lte=' + searchResults.movieLength + '&with_genres=' + searchResults.genres.toString()
 
