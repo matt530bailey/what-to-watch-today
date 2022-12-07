@@ -4,6 +4,7 @@ var searchFilter = "";
 var localMovieData = [];
 var youtubeVideoUrl = "";
 var movieInfo = {
+    index: 0,
     title: '',
     overview: '',
     releaseDate: '',
@@ -13,18 +14,20 @@ var movieInfo = {
     posterPath: '',
     movieID: '',
 };
+// var movieInfoJSON = JSON.parse(localStorage.getItem("storedMovieData"));
+
 
 // get rough data from TMDB API
 var getTMDBApi = function (searchResults) {
     searchFilter = 'trending/movie/week'
-    var getTMDBUrl = 'https://api.themoviedb.org/3/' + searchFilter + '?api_key=337b93ffd45a2b68e431aed64d687099&append_to_response=videos,images'
+    var getTMDBUrl ='https://api.themoviedb.org/3/' + searchFilter + '?api_key=337b93ffd45a2b68e431aed64d687099&append_to_response=videos,images'
     fetch(getTMDBUrl)
         .then(function (response) {
             if (response.ok) {
                 // console.log(response);
                 response.json().then(function (data) {
                     data.results.splice(4, 15)
-                    // console.log(data);
+                    console.log(data);
                     getTMDBDetail(data)
                 });
             } else {
@@ -49,10 +52,13 @@ function getTMDBDetail(movieData, passData) {
                         // call the function to write info in an object
                         generateInfo(detailedData);
                         // push objects to an array to save in local storage
-                        localMovieData.push(movieInfo);
-                        console.log(localMovieData);
-                        var movieInfoString = JSON.stringify(localMovieData);
-                        localStorage.setItem("storedMovieData", movieInfoString);
+                        // localMovieData.push(movieInfo);
+                        // console.log(localMovieData);
+                        // var movieInfoString = JSON.stringify(localMovieData);
+                        // localStorage.setItem("storedMovieData", movieInfoString);
+                        console.log(movieInfo.index)
+                        createCardComponents(movieInfo)
+                        addClickEvent($("#" + movieInfo.index));
                     })
                 } else {
                     alert('Error: ' + response.statusText);
@@ -63,30 +69,28 @@ function getTMDBDetail(movieData, passData) {
             });
     }
     // IDK why $(".trailer-btn") selector won't work outside of this function
-    passData = $(".card-action");
-    addClickEvent(passData);
+ 
 
 }
 
 function generateInfo(movieData) {
     // getting movie info from TMDB API and save in an object and local storage
-    movieInfo = {
-        title: movieData.title,
-        overview: movieData.overview,
-        releaseDate: movieData.release_date,
-        runtimeHour: Math.floor((movieData.runtime) / 60),
-        runtimeMinute: (movieData.runtime) % 60,
-        rating: movieData.vote_average,
-        posterPath: 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/' + movieData.poster_path,
-        movieID: movieData.id,
+        movieInfo.title= movieData.title,
+        movieInfo.overview= movieData.overview,
+        movieInfo.releaseDate= movieData.release_date,
+        movieInfo.runtimeHour= Math.floor((movieData.runtime) / 60),
+        movieInfo.runtimeMinute= (movieData.runtime) % 60,
+        movieInfo.rating= movieData.vote_average,
+        movieInfo.posterPath= 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/' + movieData.poster_path,
+        movieInfo.movieID= movieData.id,
 
-    };
-    // console.log(movieInfo)
+   
+    console.log(movieInfo)
 }
 
 // This function to create a template to add card elements in html file
 function createCardComponents(movieInfo) {
-    $(".cardContainer").append(`
+     $(".cardContainer").append(`
         <div class="col s12 m6 l4">
             <div class="card large card-panel grey lighten-5">
                 <div class="card-image">
@@ -96,7 +100,7 @@ function createCardComponents(movieInfo) {
                 <div class="card-content" style="overflow:scroll">
                     <p>${movieInfo.overview}</p>
                 </div>
-                <div class="card-action">
+                <div class="card-action" id="${movieInfo.index}">
                 </div>
             </div>
         </div>
@@ -104,28 +108,29 @@ function createCardComponents(movieInfo) {
 }
 
 // Creat cards from local storage instead of directly from the parent function
-function creatCardsFromStorage() {
-    var movieInfoJSON = JSON.parse(localStorage.getItem("storedMovieData"));
-    for (let i = 0; i < movieInfoJSON.length; i++) {
-        console.log(movieInfoJSON[i]);
-        createCardComponents(movieInfoJSON[i]);
-    }
-}
+// function creatCardsFromStorage() {
+//     // var movieInfoJSON = JSON.parse(localStorage.getItem("storedMovieData"));
+   
+//     for (let i = 0; i < movieInfoJSON.length; i++) {
+//         console.log(movieInfoJSON[i]);
+//         createCardComponents(movieInfoJSON[i]);
+//     }
+
+// }
 
 // Added a clickevent to all trailer buttons
 function addClickEvent(returnValue) {
     var trailerBtnEl = $('<button>')
     trailerBtnEl.addClass('waves-effect waves-light btn-small trailer-btn modal-trigger')
     trailerBtnEl.attr('href', '#modal1')
-    trailerBtnEl.text('Watch trailers')
+    trailerBtnEl.text('Watch trailer')
     var iconEl = $('<i>')
     iconEl.addClass('material-icons left')
     iconEl.text('ondemand_video')
     trailerBtnEl.append(iconEl)
     returnValue.append(trailerBtnEl)
     returnValue.click(showYouTubeTrailer)
-
-
+    movieInfo.index += 1
 }
 
 function stopVideo(){
@@ -177,6 +182,30 @@ function generateYoutubeVideoUrl(youtubeApi) {
     addVideoPlayer(youtubeVideoUrl)
 }
 
+// class DynamicElement {
+//     constructor(elType, elContent, elClass, elId, elstyle, elSrc, elHref) {
+//         this.el = document.createElement(elType)
+//         if(elContent){this.el.innerText = elContent}
+//         if(elClass){this.el.setAttribute('class', elClass)}
+//         if(elId){this.el.setAttribute('id', elId)}
+//         if(elstyle){this.el.setAttribute('style', elstyle)}
+//         if(elSrc){this.el.setAttribute('src', elSrc)}
+//         if(elHref){this.el.setAttribute('href', elHref)} 
+//         console.log(this.el)
+//         return this.el
+//     }
+// }
+
+// var cardHolderEl = new DynamicElement('div',"", 'col s12 m6 l4')
+// var cardEl = new DynamicElement('div', '', 'card large card-panel grey lighten-5')
+// var imgHolderEl = new DynamicElement('div', '', 'card-image')
+// var imgEl = new DynamicElement('img', '', '', '', '', './images/movie1.jpg')
+// var cardContainerEl = $('.cardContainer')
+
+// cardContainerEl.append(cardHolderEl)
+// cardHolderEl.append(cardEl)
+// cardEl.append(imgHolderEl)
+// imgHolderEl.append(imgEl)
 
 // -------------------------------------------------------------------------------------
 
@@ -289,4 +318,4 @@ var closeBtnEl = $('.modal-close')
 console.log(closeBtnEl)
 closeBtnEl.click(stopVideo())
 getTMDBApi()
-creatCardsFromStorage()
+// creatCardsFromStorage()
