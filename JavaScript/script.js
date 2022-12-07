@@ -214,7 +214,7 @@ var startButton = $('#startBtn')
 var questionEl = $('#question')
 var answerBtn = $('#answer-buttons')
 var answerEl = []
-
+var resultsEl = $("#results")
 var questionIndex = 0
 var startGame = function () {
     //add classes to show/hide start and quiz screen
@@ -246,12 +246,25 @@ function displayQuestion() {
 function selectAnswer(event) {
     event.preventDefault();
     console.log(event.target)
-    btn = event.target
+
     questionIndex++
     
-    displayQuestion()
+    if (questionIndex >= questions.questionsArray[questionIndex].a.length){
+        allDone();
+
+    } else {
+       displayQuestion() 
+    }
+
+    
 }
 
+function allDone() {
+    questionBox.removeClass('show');
+    questionBox.addClass('hide');
+    resultsEl.removeClass('hide');
+    resultsEl.addClass('show')
+}
 
 // set next question
 
