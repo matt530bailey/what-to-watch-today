@@ -27,10 +27,11 @@
 
 
     <!-- Welcome Screen -->
-    <section id="container" class = "card z-depth-5 show">
+    <section id="container" class="card z-depth-5 show">
         <div class="card center-align">
             <h1 id="welcomeTitle" class="header center teal-text text-lighten-2">See Movies For You</h1>
-            <p id="intro" class="header col s12 light">Click on the Start Button to begin and find the best movie for you today</p>
+            <p id="intro" class="header col s12 light">Click on the Start Button to begin and find the best movie for
+                you today</p>
             <button id="startBtn" class="btn-large waves-effect waves-light teal lighten-1">Start</button>
         </div>
 
@@ -62,7 +63,8 @@
             <!-- Modal Structure -->
             <div id="modal1" class="modal">
                 <div class="modal-header" style="float: right">
-                    <a href="#!" class="modal-close waves-effect btn-small waves-light red"><i class="material-icons modal-close">close</i></a>
+                    <a href="#!" class="modal-close waves-effect btn-small waves-light red"><i
+                            class="material-icons modal-close">close</i></a>
                 </div>
                 <div class="modal-content">
                     <iframe id="video-player" frameborder="0" width="100%" height="600" src="">
@@ -80,15 +82,17 @@
         integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/utc.js"></script>
+    <script>dayjs.extend(window.dayjs_plugin_utc)</script>
     <script>dayjs().format()</script>
     <script>
-        $(document).ready(function(){
-          $('.modal').modal({
-              dismissible: false, // Modal cannot be closed by clicking anywhere outside
+        $(document).ready(function () {
+            $('.modal').modal({
+                dismissible: false, // Modal cannot be closed by clicking anywhere outside
             }
-          );
-          })
-        </script>
+            );
+        })
+    </script>
     <script src="./JavaScript/script.js"></script>
 </body>
 

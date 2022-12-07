@@ -1,12 +1,35 @@
 var bodyEl = document.querySelector('body');
+const genreCodeList = {
+    Action: 28,
+    Animation: 16,
+    Comedy: 35,
+    Drama: 18,
+    Family: 10751,
+    Fantasy: 14,
+    Horror: 27,
+    Mystery: 9648,
+    Romance: 10749,
+    Thriller: 53,
+    Western: 37,
+}
 
 var searchFilter = {
     movieLength: "",
     yearsToNow: "",
-    genre: "",
+    genres: [],
     isAdult: false,
 }
 
+var testingSearchFilter = {
+    movieLength: "200",
+    yearsToNow: "15",
+    genres: [genreCodeList.Action, genreCodeList.Western],
+    isAdult: false,
+}
+console.log(testingSearchFilter.genres)
+var currentYear = dayjs().format('YYYY');
+var yearBefore = currentYear - testingSearchFilter.yearsToNow;
+var releaseDateBefore = yearBefore + '-12-31';
 var localMovieData = [];
 var youtubeVideoUrl = "";
 var movieInfo = {
@@ -20,14 +43,13 @@ var movieInfo = {
     posterPath: '',
     movieID: '',
 };
-// var movieInfoJSON = JSON.parse(localStorage.getItem("storedMovieData"));
 
 
-// get rough data from TMDB API
 var getTMDBApi = function (searchResults) {
-    var testing = 'trending/movie/week'
-    var getTMDBUrl ='https://api.themoviedb.org/3/' + testing + '?api_key=337b93ffd45a2b68e431aed64d687099&append_to_response=videos,images'
-    fetch(getTMDBUrl)
+    var testingUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=337b93ffd45a2b68e431aed64d687099&language=en-US&sort_by=popularity.desc&include_adult=' + searchResults.isAdult + '&release_date.lte=' + releaseDateBefore + '&with_runtime.lte=' + searchResults.movieLength + '&with_genres=' + searchResults.genres.toString()
+
+    console.log(testingUrl)
+    fetch(testingUrl)
         .then(function (response) {
             if (response.ok) {
                 // console.log(response);
@@ -75,28 +97,30 @@ function getTMDBDetail(movieData, passData) {
             });
     }
     // IDK why $(".trailer-btn") selector won't work outside of this function
- 
 
+    var closeBtnEl = $('.modal-close')
+    console.log(closeBtnEl)
+    closeBtnEl.click(stopVideo)
 }
 
 function generateInfo(movieData) {
     // getting movie info from TMDB API and save in an object and local storage
-        movieInfo.title= movieData.title,
-        movieInfo.overview= movieData.overview,
-        movieInfo.releaseDate= movieData.release_date,
-        movieInfo.runtimeHour= Math.floor((movieData.runtime) / 60),
-        movieInfo.runtimeMinute= (movieData.runtime) % 60,
-        movieInfo.rating= movieData.vote_average,
-        movieInfo.posterPath= 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/' + movieData.poster_path,
-        movieInfo.movieID= movieData.id,
+    movieInfo.title = movieData.title,
+        movieInfo.overview = movieData.overview,
+        movieInfo.releaseDate = movieData.release_date,
+        movieInfo.runtimeHour = Math.floor((movieData.runtime) / 60),
+        movieInfo.runtimeMinute = (movieData.runtime) % 60,
+        movieInfo.rating = movieData.vote_average,
+        movieInfo.posterPath = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/' + movieData.poster_path,
+        movieInfo.movieID = movieData.id,
 
-   
-    console.log(movieInfo)
+
+        console.log(movieInfo)
 }
 
 // This function to create a template to add card elements in html file
 function createCardComponents(movieInfo) {
-     $(".cardContainer").append(`
+    $(".cardContainer").append(`
         <div class="col s12 m6 l4">
             <div class="card large card-panel grey lighten-5">
                 <div class="card-image">
@@ -113,17 +137,6 @@ function createCardComponents(movieInfo) {
     `);
 }
 
-// Creat cards from local storage instead of directly from the parent function
-// function creatCardsFromStorage() {
-//     // var movieInfoJSON = JSON.parse(localStorage.getItem("storedMovieData"));
-   
-//     for (let i = 0; i < movieInfoJSON.length; i++) {
-//         console.log(movieInfoJSON[i]);
-//         createCardComponents(movieInfoJSON[i]);
-//     }
-
-// }
-
 // Added a clickevent to all trailer buttons
 function addClickEvent(returnValue) {
     var trailerBtnEl = $('<button>')
@@ -139,9 +152,9 @@ function addClickEvent(returnValue) {
     movieInfo.index += 1
 }
 
-function stopVideo(){
-    console.log($('#video-player'))
-    $('#video-player')[0].contentWindow.postMessage('{"event":"command","func":"' + 'stopVideo' + '","args":""}', '*');
+function stopVideo() {
+    console.log($('iframe'))
+    $('#video-player').removeAttr('src')
 }
 
 function addVideoPlayer(youtubeVideoUrl) {
@@ -199,7 +212,10 @@ function generateYoutubeVideoUrl(youtubeApi) {
 //         if(elHref){this.el.setAttribute('href', elHref)} 
 //         console.log(this.el)
 //         return this.el
-//     }
+//     } 
+//     // returnEl () {
+//     //     return this.el
+//     // }
 // }
 
 // var cardHolderEl = new DynamicElement('div',"", 'col s12 m6 l4')
@@ -218,60 +234,61 @@ function generateYoutubeVideoUrl(youtubeApi) {
 
 // adding questions
 var questions = {
-        questionsArray:[
-    {
-        q: 'How are you feeling today?',
-        a: [
-            { text: 'Happy 😃' },
-            { text: 'Neutral😑' },
-            { text: 'Sad 😟' }
+    questionsArray: [
+        {
+            q: 'How are you feeling today?',
+            a: [
+                { text: 'Happy 😃' },
+                { text: 'Neutral😑' },
+                { text: 'Sad 😟' }
 
-        ]
-    },
-    {
+            ]
+        },
+        {
 
-        q: 'What is the occation?',
-        a: [
-            { text: 'Alone time' },
-            { text: 'On a date' },
-            { text: 'With friends' },
-            { text: 'With family' }
-        ]
-    },
-    {
-        q: 'What genre would you like?',
-        a: [
+            q: 'What is the occation?',
+            a: [
+                { text: 'Alone time' },
+                { text: 'On a date' },
+                { text: 'With friends' },
+                { text: 'With family' }
+            ]
+        },
+        {
+            q: 'What genre would you like?',
+            a: [
 
-            { text: 'Action' },
-            { text: 'Comedy' },
-            { text: 'Drama' },
-            { text: 'Fantasy' },
-            { text: 'Horror' },
-            { text: 'Mystery' },
-            { text: 'Romance' },
-            { text: 'Thriller' },
-            { text: 'Western' }
+                { text: 'Action' },
+                { text: 'Comedy' },
+                { text: 'Drama' },
+                { text: 'Fantasy' },
+                { text: 'Horror' },
+                { text: 'Mystery' },
+                { text: 'Romance' },
+                { text: 'Thriller' },
+                { text: 'Western' }
 
-        ]
-    },
-    {
-        q: 'How old would you like the movie to be?',
-        a: [
-            { text: 'One year or less' },
-            { text: 'Five years or less' },
-            { text: 'Ten years or less' },
-            { text: 'Twenty years or less' }
-        ]
-    },
-    {
-        q: 'How long would would you like the movie to be?',
-        a: [
-            { text: 'Up to 2 hours' },
-            { text: 'Up to 3 hours' },
-            { text: 'Up to 4 hours' }
-        ]
-    }
-]}
+            ]
+        },
+        {
+            q: 'How old would you like the movie to be?',
+            a: [
+                { text: 'One year or less' },
+                { text: 'Five years or less' },
+                { text: 'Ten years or less' },
+                { text: 'Twenty years or less' }
+            ]
+        },
+        {
+            q: 'How long would would you like the movie to be?',
+            a: [
+                { text: 'Up to 2 hours' },
+                { text: 'Up to 3 hours' },
+                { text: 'Up to 4 hours' }
+            ]
+        }
+    ]
+}
 
 var welcomeEl = $('#container')
 var questionBox = $('#questionsContainer')
@@ -297,7 +314,7 @@ $(startButton).on('click', startGame)
 function displayQuestion() {
 
     questionEl.text(questions.questionsArray[questionIndex].q)
-    
+
     answerBtn.html("")
     for (var i = 0; i < questions.questionsArray[questionIndex].a.length; i++) {
         var btn = $("<button>")
@@ -313,15 +330,15 @@ function selectAnswer(event) {
     console.log(event.target)
 
     questionIndex++
-    
-    if (questionIndex >= questions.questionsArray[questionIndex].a.length){
+
+    if (questionIndex >= questions.questionsArray[questionIndex].a.length) {
         allDone();
 
     } else {
-       displayQuestion() 
+        displayQuestion()
     }
 
-    
+
 }
 
 function allDone() {
@@ -334,8 +351,8 @@ function allDone() {
 // set next question
 
 // excute functions
-var closeBtnEl = $('.modal-close')
-console.log(closeBtnEl)
-closeBtnEl.click(stopVideo())
-getTMDBApi()
+
+getTMDBApi(testingSearchFilter)
+
 // creatCardsFromStorage()
+// testingTMDBApi(testingSearchFilter)
