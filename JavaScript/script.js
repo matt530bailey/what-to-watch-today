@@ -1,5 +1,4 @@
 var bodyEl = document.querySelector('body');
-
 var searchFilter = ""
 var localMovieData = [];
 var movieInfo = {
@@ -12,6 +11,10 @@ var movieInfo = {
     posterPath: '',
     movieID: '',
 };
+
+$(document).ready(function(){
+    $('.sidenav').sidenav();
+  });
 
 // get rough data from TMDB API
 var getMovieData = function (searchResults) {
