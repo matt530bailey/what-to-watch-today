@@ -85,10 +85,10 @@ function getTMDBDetail(movieData, passData) {
                         // call the function to write info in an object
                         generateInfo(detailedData);
                         // push objects to an array to save in local storage
-                        // localMovieData.push(movieInfo);
-                        // console.log(localMovieData);
-                        // var movieInfoString = JSON.stringify(localMovieData);
-                        // localStorage.setItem("storedMovieData", movieInfoString);
+                        localMovieData.push(movieInfo);
+                        console.log(localMovieData);
+                        var movieInfoString = JSON.stringify(localMovieData);
+                        localStorage.setItem("storedMovieData", movieInfoString);
                         console.log(movieInfo.index)
                         createCardComponents(movieInfo)
                         addClickEvent($("#" + movieInfo.index));
@@ -163,9 +163,9 @@ function stopVideo() {
 }
 
 function addVideoPlayer(youtubeVideoUrl) {
-
     $("#video-player").attr('src', youtubeVideoUrl)
 }
+
 // Creat a function that will locate the movie title and pass it to a search in youtube API
 function showYouTubeTrailer(event) {
     var targetBtn = event.target;
