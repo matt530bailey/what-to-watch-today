@@ -152,7 +152,8 @@ function creatCardsFromStorage() {
 
 
 // adding questions
-var questions = [
+var questions = {
+        questionsArray:[
     {
         q: 'How are you feeling today?',
         a: [
@@ -205,7 +206,7 @@ var questions = [
             { text: 'Up to 4 hours' }
         ]
     }
-]
+]}
 
 var welcomeEl = $('#container')
 var questionBox = $('#questionsContainer')
@@ -225,14 +226,18 @@ var startGame = function () {
 }
 $(startButton).on('click', startGame)
 
+
+
 //Display Question with answer buttons
 function displayQuestion() {
-    questionEl.text(questions[questionIndex].q)
+
+    questionEl.text(questions.questionsArray[questionIndex].q)
+    
     answerBtn.html("")
-    for (var i = 0; i < questions[questionIndex].a.length; i++) {
+    for (var i = 0; i < questions.questionsArray[questionIndex].a.length; i++) {
         var btn = $("<button>")
-        btn.text(questions[questionIndex].a[i].text);
-        btn.addClass('waves-effect waves-teal btn-flat"')
+        btn.text(questions.questionsArray[questionIndex].a[i].text);
+        btn.addClass('"waves-effect waves-teal btn-flat"')
         btn.on("click", selectAnswer)
         answerBtn.append(btn)
     }
@@ -242,12 +247,8 @@ function selectAnswer(event) {
     event.preventDefault();
     console.log(event.target)
     btn = event.target
-    if (event.target == questions[questionIndex].a) {
-
-    } else {
-        console.log("done")
-    }
     questionIndex++
+    
     displayQuestion()
 }
 
