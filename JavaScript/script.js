@@ -238,6 +238,7 @@ function generateYoutubeVideoUrl(youtubeApi) {
 
 
 // adding questions
+
 var questionsArray = [
     {
         q: 'How are you feeling today?',
@@ -319,9 +320,10 @@ $(startButton).on('click', startGame)
 //Display Question with answer buttons
 function displayQuestion() {
 
+
     questionEl.text(questionsArray[questionIndex].q)
     
-    answerBtn.html("")
+   answerBtn.html("")
     for (var i = 0; i < questionsArray[questionIndex].a.length; i++) {
         var btn = $("<button>")
         var br = $("<br>")
@@ -340,14 +342,16 @@ function selectAnswer(event) {
     console.log(event.target.value)
 
     questionIndex++
+
     ansArray.push(event.target.innerText)
     ansScore.push(parseInt(event.target.value))
     console.log(ansScore[0])
     if (questionIndex >= questionsArray[questionIndex].a.length){
+
         allDone();
 
     } else {
-       displayQuestion() 
+        displayQuestion()
     }
    
     var totalScore = ansScore[0] + ansScore[1] + ansScore[2]
@@ -391,6 +395,7 @@ if (totalScore>5){
                     } 
 
                 }
+
 
 
 function allDone() {
