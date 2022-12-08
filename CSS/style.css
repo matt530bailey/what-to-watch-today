@@ -9,8 +9,7 @@
 #questionsContainer{
     display: block;
     text-align: center;
-    background-image: url("../images/feelings.jpeg") !important;
-    background-size: 1000px ;
+    background-image: url("../images/moviebackground.jpg") !important;
     padding:10%;
     color: white;
 
