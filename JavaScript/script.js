@@ -1,12 +1,35 @@
 var bodyEl = document.querySelector('body');
+const genreCodeList = {
+    Action: 28,
+    Animation: 16,
+    Comedy: 35,
+    Drama: 18,
+    Family: 10751,
+    Fantasy: 14,
+    Horror: 27,
+    Mystery: 9648,
+    Romance: 10749,
+    Thriller: 53,
+    Western: 37,
+}
 
 var searchFilter = {
     movieLength: "",
     yearsToNow: "",
-    genre: "",
+    genres: [],
     isAdult: false,
 }
 
+var testingSearchFilter = {
+    movieLength: "200",
+    yearsToNow: "15",
+    genres: [genreCodeList.Action, genreCodeList.Western],
+    isAdult: false,
+}
+console.log(testingSearchFilter.genres)
+var currentYear = dayjs().format('YYYY');
+var yearBefore = currentYear - testingSearchFilter.yearsToNow;
+var releaseDateBefore = yearBefore + '-12-31';
 var localMovieData = [];
 var youtubeVideoUrl = "";
 var movieInfo = {
@@ -20,14 +43,18 @@ var movieInfo = {
     posterPath: '',
     movieID: '',
 };
-// var movieInfoJSON = JSON.parse(localStorage.getItem("storedMovieData"));
 
+
+$(document).ready(function(){
+    $('.sidenav').sidenav();
+  });
 
 // get rough data from TMDB API
 var getTMDBApi = function (searchResults) {
-    var testing = 'trending/movie/week'
-    var getTMDBUrl ='https://api.themoviedb.org/3/' + testing + '?api_key=337b93ffd45a2b68e431aed64d687099&append_to_response=videos,images'
-    fetch(getTMDBUrl)
+    var testingUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=337b93ffd45a2b68e431aed64d687099&language=en-US&sort_by=popularity.desc&include_adult=' + searchResults.isAdult + '&release_date.lte=' + releaseDateBefore + '&with_runtime.lte=' + searchResults.movieLength + '&with_genres=' + searchResults.genres.toString()
+
+    console.log(testingUrl)
+    fetch(testingUrl)
         .then(function (response) {
             if (response.ok) {
                 // console.log(response);
@@ -75,28 +102,30 @@ function getTMDBDetail(movieData, passData) {
             });
     }
     // IDK why $(".trailer-btn") selector won't work outside of this function
- 
 
+    var closeBtnEl = $('.modal-close')
+    console.log(closeBtnEl)
+    closeBtnEl.click(stopVideo)
 }
 
 function generateInfo(movieData) {
     // getting movie info from TMDB API and save in an object and local storage
-        movieInfo.title= movieData.title,
-        movieInfo.overview= movieData.overview,
-        movieInfo.releaseDate= movieData.release_date,
-        movieInfo.runtimeHour= Math.floor((movieData.runtime) / 60),
-        movieInfo.runtimeMinute= (movieData.runtime) % 60,
-        movieInfo.rating= movieData.vote_average,
-        movieInfo.posterPath= 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/' + movieData.poster_path,
-        movieInfo.movieID= movieData.id,
+    movieInfo.title = movieData.title,
+        movieInfo.overview = movieData.overview,
+        movieInfo.releaseDate = movieData.release_date,
+        movieInfo.runtimeHour = Math.floor((movieData.runtime) / 60),
+        movieInfo.runtimeMinute = (movieData.runtime) % 60,
+        movieInfo.rating = movieData.vote_average,
+        movieInfo.posterPath = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/' + movieData.poster_path,
+        movieInfo.movieID = movieData.id,
 
-   
-    console.log(movieInfo)
+
+        console.log(movieInfo)
 }
 
 // This function to create a template to add card elements in html file
 function createCardComponents(movieInfo) {
-     $(".cardContainer").append(`
+    $(".cardContainer").append(`
         <div class="col s12 m6 l4">
             <div class="card large card-panel grey lighten-5">
                 <div class="card-image">
@@ -113,17 +142,6 @@ function createCardComponents(movieInfo) {
     `);
 }
 
-// Creat cards from local storage instead of directly from the parent function
-// function creatCardsFromStorage() {
-//     // var movieInfoJSON = JSON.parse(localStorage.getItem("storedMovieData"));
-   
-//     for (let i = 0; i < movieInfoJSON.length; i++) {
-//         console.log(movieInfoJSON[i]);
-//         createCardComponents(movieInfoJSON[i]);
-//     }
-
-// }
-
 // Added a clickevent to all trailer buttons
 function addClickEvent(returnValue) {
     var trailerBtnEl = $('<button>')
@@ -139,9 +157,9 @@ function addClickEvent(returnValue) {
     movieInfo.index += 1
 }
 
-function stopVideo(){
-    console.log($('#video-player'))
-    $('#video-player')[0].contentWindow.postMessage('{"event":"command","func":"' + 'stopVideo' + '","args":""}', '*');
+function stopVideo() {
+    console.log($('iframe'))
+    $('#video-player').removeAttr('src')
 }
 
 function addVideoPlayer(youtubeVideoUrl) {
@@ -199,7 +217,10 @@ function generateYoutubeVideoUrl(youtubeApi) {
 //         if(elHref){this.el.setAttribute('href', elHref)} 
 //         console.log(this.el)
 //         return this.el
-//     }
+//     } 
+//     // returnEl () {
+//     //     return this.el
+//     // }
 // }
 
 // var cardHolderEl = new DynamicElement('div',"", 'col s12 m6 l4')
@@ -216,4 +237,183 @@ function generateYoutubeVideoUrl(youtubeApi) {
 // -------------------------------------------------------------------------------------
 
 
-// adding questions
+var questionsArray = [
+    {
+        q: 'How are you feeling today?',
+        a: [
+            { text: 'Happy 😃', value:2 },//2
+            { text: 'Neutral😑', value:1 }, //1
+            { text: 'Sad 😟', value:0 }//0
+
+        ]
+    },
+    {
+
+        q: 'What is the occation?',
+        a: [
+            { text: 'On a date', value:3 },//3
+            { text: 'With friends', value: 2 },//2
+            { text: 'With family', value:1 }, //1
+            { text: 'Alone time', value:0 },//0
+        ]
+    },//if total is <= 2 chose genre comedy.  2 = animation, 3 = action, 4 <= romance
+    {
+        q: 'What genre would you like?',
+        a: [
+
+            { text: 'Action', value: 16 },
+            { text: 'Comedy', value: 17 },
+            { text: 'Fantasy', value: 18},
+            { text: 'Horror', value: 19},
+            { text: 'Mystery', value: 20},
+            { text: 'Thriller', value: 21},
+            { text: 'Western', value: 22},
+            { text: 'Drama', value: 23},
+            { text: 'Romance', value: 24},
+            { text: 'Any 🤷‍♂️', value: 0},
+
+        ]
+    },
+    {
+        q: 'How old would you like the movie to be?',
+        a: [
+            { text: 'One year or less' },
+            { text: 'Five years or less' },
+            { text: 'Ten years or less' },
+            { text: 'Twenty years or less' }
+        ]
+    },
+    {
+        q: 'How long would would you like the movie to be?',
+        a: [
+            { text: 'Up to 2 hours' },
+            { text: 'Up to 3 hours' },
+            { text: 'Up to 4 hours' }
+        ]
+    }
+]
+
+var welcomeEl = $('#container')
+var questionBox = $('#questionsContainer')
+var startButton = $('#startBtn')
+var questionEl = $('#question')
+var answerBtn = $('#answer-buttons')
+var answerEl = []
+var resultsEl = $("#results")
+var questionIndex = 0
+var ansArray = [];
+var ansScore = [];
+var startGame = function () {
+    //add classes to show/hide start and quiz screen
+    welcomeEl.addClass('hide');
+    welcomeEl.removeClass('show');
+    questionBox.removeClass('hide');
+    questionBox.addClass('show');
+    displayQuestion()
+}
+$(startButton).on('click', startGame)
+
+
+
+//Display Question with answer buttons
+function displayQuestion() {
+
+    questionEl.text(questionsArray[questionIndex].q)
+    
+    answerBtn.html("")
+    for (var i = 0; i < questionsArray[questionIndex].a.length; i++) {
+        var btn = $("<button>")
+        var br = $("<br>")
+        btn.text(questionsArray[questionIndex].a[i].text);
+        btn.val(questionsArray[questionIndex].a[i].value);
+        btn.addClass("waves-effect teal waves-light btn effect")
+        btn.on("click", selectAnswer)
+
+        answerBtn.append(btn, br)
+    }
+}
+
+function selectAnswer(event) {
+    event.preventDefault();
+    console.log(event.target.innerText)
+    console.log(event.target.value)
+
+    questionIndex++
+    ansArray.push(event.target.innerText)
+    ansScore.push(parseInt(event.target.value))
+    console.log(ansScore[0])
+    if (questionIndex >= questionsArray[questionIndex].a.length){
+        allDone();
+
+    } else {
+       displayQuestion() 
+    }
+   
+    var totalScore = ansScore[0] + ansScore[1] + ansScore[2]
+    console.log("totalScore = " + totalScore)
+    // if(totalScore >= 24 ){
+    //     console.log('Action')
+    // }else if( totalScore >= 23){ 
+    //     console.log("Comedy")
+    // } else if( totalScore >=22){
+    //     console.log("Fantasy")
+    // }else if( totalScore >=21){
+    //     console.log("Horror")
+    // }else if( totalScore >=20){
+    //     console.log("Mystery")
+    // }else if( totalScore >=19){
+    //     console.log("Thriller")
+    // }else if( totalScore >=18){
+    //     console.log("Western")
+    // }else if( totalScore >=17){
+    //     console.log("Drama")
+    // }else if( totalScore >=16){
+    //     console.log("Romance")
+    // }else if(totalScore >= 4){
+    //     console.log("Romance")
+    // }else if( totalScore >=3){
+    //     console.log("animation")
+    // }else if( totalScore >=2){
+    //     console.log("comedy")
+    // }
+    console.log(ansArray)
+if (totalScore>5){
+        console.log(ansArray[2])
+    }else if(totalScore >=4){
+        console.log("romance")
+        }else if (totalScore>=3){
+                console.log("action")
+            }else if (totalScore>=2){
+                    console.log("animation")
+                }else if (totalScore<2){
+                        console.log("comedy")
+                    } 
+
+                }
+
+
+function allDone() {
+    questionBox.removeClass('show');
+    questionBox.addClass('hide');
+    resultsEl.removeClass('hide');
+    resultsEl.addClass('show')
+}
+
+// var answerCheck = 
+
+
+
+
+
+
+
+
+console.log(ansArray)
+// set next question
+
+// excute functions
+
+getTMDBApi(testingSearchFilter)
+
+// creatCardsFromStorage()
+// testingTMDBApi(testingSearchFilter)
