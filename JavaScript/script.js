@@ -32,22 +32,28 @@ var yearBefore = currentYear - testingSearchFilter.yearsToNow;
 var releaseDateBefore = yearBefore + '-12-31';
 var localMovieData = [];
 var youtubeVideoUrl = "";
-var movieInfo = {
-    index: 0,
-    title: '',
-    overview: '',
-    releaseDate: '',
-    runtimeHour: '',
-    runtimeMinute: '',
-    rating: '',
-    posterPath: '',
-    movieID: '',
-};
+// var movieInfo = {
+//     index: 0,
+//     title: '',
+//     overview: '',
+//     releaseDate: '',
+//     rating: '',
+//     posterPath: '',
+//     movieID: '',
+// };
 
+$(document).ready(function () {
+    $('.modal').modal({
+        dismissible: false,
+        opacity: 0.6,
+        onCloseStart: stopVideo,
+    },
+  );
+  })
 
-$(document).ready(function(){
+$(document).ready(function () {
     $('.sidenav').sidenav();
-  });
+});
 
 // get rough data from TMDB API
 var getTMDBApi = function (searchResults) {
@@ -73,55 +79,40 @@ var getTMDBApi = function (searchResults) {
 };
 
 // A function to get more detailed data from TMDB API (the length of the movie)
-function getTMDBDetail(movieData, passData) {
+function getTMDBDetail(movieData) {
     for (let i = 0; i < movieData.results.length; i++) {
-        var movieID = movieData.results[i].id
-        var getRuntimeById = 'https://api.themoviedb.org/3/movie/' + movieID + '?api_key=337b93ffd45a2b68e431aed64d687099&append_to_response=videos,images'
-        fetch(getRuntimeById)
-            .then(function (response) {
-                if (response.ok) {
-                    response.json().then(function (detailedData) {
-                        console.log(detailedData);
+        var movieResult = movieData.results[i]
+                        console.log(movieResult);
+                        console.log(localMovieData.length)
                         // call the function to write info in an object
-                        generateInfo(detailedData);
-                        // push objects to an array to save in local storage
-                        localMovieData.push(movieInfo);
+                        // generateInfo(movieResult);
+                        createCardComponents(movieResult)
+                        addButtonsPlusClickEvents($("#" + localMovieData.length));
+                        localMovieData.push(movieResult);
                         console.log(localMovieData);
-                        var movieInfoString = JSON.stringify(localMovieData);
-                        localStorage.setItem("storedMovieData", movieInfoString);
-                        console.log(movieInfo.index)
-                        createCardComponents(movieInfo)
-                        addClickEvent($("#" + movieInfo.index));
-                    })
-                } else {
-                    alert('Error: ' + response.statusText);
-                }
-            })
-            .catch(function (error) {
-                console.log('something is wrong');
-            });
+                        storeMovieData(localMovieData)
+                        // console.log(movieInfo.index)
+                        // console.log(movieInfo)
     }
-    // IDK why $(".trailer-btn") selector won't work outside of this function
-
-    var closeBtnEl = $('.modal-close')
-    console.log(closeBtnEl)
-    closeBtnEl.click(stopVideo)
+    // return
+}
+// push objects to an array to save in local storage
+function storeMovieData (localMovieData) {
+    var movieInfoString = JSON.stringify(localMovieData);
+    localStorage.setItem("storedMovieData", movieInfoString);
 }
 
-function generateInfo(movieData) {
-    // getting movie info from TMDB API and save in an object and local storage
-    movieInfo.title = movieData.title,
-        movieInfo.overview = movieData.overview,
-        movieInfo.releaseDate = movieData.release_date,
-        movieInfo.runtimeHour = Math.floor((movieData.runtime) / 60),
-        movieInfo.runtimeMinute = (movieData.runtime) % 60,
-        movieInfo.rating = movieData.vote_average,
-        movieInfo.posterPath = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/' + movieData.poster_path,
-        movieInfo.movieID = movieData.id,
-
-
-        console.log(movieInfo)
-}
+// function generateInfo(movieData) {
+//     // getting movie info from TMDB API and save in an object
+//     movieInfo.title = movieData.title
+//     movieInfo.overview = movieData.overview
+//     movieInfo.releaseDate = movieData.release_date
+//     movieInfo.rating = movieData.vote_average
+//     movieInfo.posterPath = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/' + movieData.poster_path
+//     movieInfo.movieID = movieData.id
+//     return movieInfo
+//     // console.log(movieInfo)
+// }
 
 // This function to create a template to add card elements in html file
 function createCardComponents(movieInfo) {
@@ -129,13 +120,13 @@ function createCardComponents(movieInfo) {
         <div class="col s12 m6 l4">
             <div class="card large card-panel grey lighten-5">
                 <div class="card-image">
-                    <img src="${movieInfo.posterPath}">
+                    <img src='https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${movieInfo.poster_path}'>
                         <span class="card-title" style='background-color: rgba(0,0,0,0.6)'>${movieInfo.title}</span>
                 </div>
                 <div class="card-content" style="overflow:scroll">
                     <p>${movieInfo.overview}</p>
                 </div>
-                <div class="card-action" id="${movieInfo.index}">
+                <div class="card-action" id="${localMovieData.length}">
                 </div>
             </div>
         </div>
@@ -143,7 +134,7 @@ function createCardComponents(movieInfo) {
 }
 
 // Added a clickevent to all trailer buttons
-function addClickEvent(returnValue) {
+function addButtonsPlusClickEvents(returnValue) {
     var trailerBtnEl = $('<button>')
     trailerBtnEl.addClass('waves-effect waves-light btn-small trailer-btn modal-trigger')
     trailerBtnEl.attr('href', '#modal1')
@@ -154,7 +145,7 @@ function addClickEvent(returnValue) {
     trailerBtnEl.append(iconEl)
     returnValue.append(trailerBtnEl)
     returnValue.click(showYouTubeTrailer)
-    movieInfo.index += 1
+    // movieInfo.index += 1
 }
 
 function stopVideo() {
@@ -177,8 +168,6 @@ function showYouTubeTrailer(event) {
     console.log(selectTitle)
     getYoutubeApi(selectTitle)
 }
-
-
 
 // Added a function to get movie data from youtube API
 function getYoutubeApi(movieTitle) {
@@ -205,34 +194,10 @@ function generateYoutubeVideoUrl(youtubeApi) {
     console.log(youtubeVideoUrl)
     addVideoPlayer(youtubeVideoUrl)
 }
-
-// class DynamicElement {
-//     constructor(elType, elContent, elClass, elId, elstyle, elSrc, elHref) {
-//         this.el = document.createElement(elType)
-//         if(elContent){this.el.innerText = elContent}
-//         if(elClass){this.el.setAttribute('class', elClass)}
-//         if(elId){this.el.setAttribute('id', elId)}
-//         if(elstyle){this.el.setAttribute('style', elstyle)}
-//         if(elSrc){this.el.setAttribute('src', elSrc)}
-//         if(elHref){this.el.setAttribute('href', elHref)} 
-//         console.log(this.el)
-//         return this.el
-//     } 
-//     // returnEl () {
-//     //     return this.el
-//     // }
-// }
-
-// var cardHolderEl = new DynamicElement('div',"", 'col s12 m6 l4')
-// var cardEl = new DynamicElement('div', '', 'card large card-panel grey lighten-5')
-// var imgHolderEl = new DynamicElement('div', '', 'card-image')
-// var imgEl = new DynamicElement('img', '', '', '', '', './images/movie1.jpg')
-// var cardContainerEl = $('.cardContainer')
-
-// cardContainerEl.append(cardHolderEl)
-// cardHolderEl.append(cardEl)
-// cardEl.append(imgHolderEl)
-// imgHolderEl.append(imgEl)
+function adjustCloseBtn (){
+    var closeBtnEl = $('#closebutton')
+    closeBtnEl.css({'position':'absolute', 'top':'-30px', 'right':'-30px'})
+}
 
 // -------------------------------------------------------------------------------------
 
@@ -356,7 +321,7 @@ function allDone() {
 // set next question
 
 // excute functions
-
+adjustCloseBtn()
 getTMDBApi(testingSearchFilter)
 
 // creatCardsFromStorage()
