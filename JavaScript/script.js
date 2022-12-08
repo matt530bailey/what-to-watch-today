@@ -222,9 +222,9 @@ var questions = {
     {
         q: 'How are you feeling today?',
         a: [
-            { text: 'Happy 😃' },
-            { text: 'Neutral😑' },
-            { text: 'Sad 😟' }
+            { text: 'Happy 😃' },//2
+            { text: 'Neutral😑' }, //1
+            { text: 'Sad 😟' }//0
 
         ]
     },
@@ -232,25 +232,26 @@ var questions = {
 
         q: 'What is the occation?',
         a: [
-            { text: 'Alone time' },
-            { text: 'On a date' },
-            { text: 'With friends' },
-            { text: 'With family' }
+            { text: 'On a date' },//3
+            { text: 'With friends' },//2
+            { text: 'With family' }, //1
+            { text: 'Alone time' },//0
         ]
-    },
+    },//if total is =< 2 chose genre comedy.  2 = animation, 3 = action, 4 = romance
     {
         q: 'What genre would you like?',
         a: [
 
             { text: 'Action' },
             { text: 'Comedy' },
-            { text: 'Drama' },
             { text: 'Fantasy' },
             { text: 'Horror' },
             { text: 'Mystery' },
-            { text: 'Romance' },
             { text: 'Thriller' },
-            { text: 'Western' }
+            { text: 'Western' },
+            { text: 'Drama' },
+            { text: 'Romance' },
+            { text: 'Any 🤷‍♂️'}
 
         ]
     },
@@ -291,7 +292,7 @@ var startGame = function () {
 }
 $(startButton).on('click', startGame)
 
-
+var ansArray = [];
 
 //Display Question with answer buttons
 function displayQuestion() {
@@ -310,10 +311,10 @@ function displayQuestion() {
 
 function selectAnswer(event) {
     event.preventDefault();
-    console.log(event.target)
+    console.log(event.target.innerText)
 
     questionIndex++
-    
+    ansArray.push(event.target)
     if (questionIndex >= questions.questionsArray[questionIndex].a.length){
         allDone();
 
@@ -331,6 +332,16 @@ function allDone() {
     resultsEl.addClass('show')
 }
 
+var answerCheck = 
+
+
+
+
+
+
+
+
+console.log(ansArray)
 // set next question
 
 // excute functions

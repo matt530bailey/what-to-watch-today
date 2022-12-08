@@ -6,3 +6,13 @@
 
 }
 
+#questionsContainer{
+    display: block;
+    text-align: center;
+    background-image: url("../images/feelings.jpeg") !important;
+    background-size: 1000px ;
+    padding:10%;
+    color: white;
+
+}
+
