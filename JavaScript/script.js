@@ -217,14 +217,13 @@ function generateYoutubeVideoUrl(youtubeApi) {
 
 
 // adding questions
-var questions = {
-        questionsArray:[
+var questionsArray = [
     {
         q: 'How are you feeling today?',
         a: [
-            { text: 'Happy 😃' },//2
-            { text: 'Neutral😑' }, //1
-            { text: 'Sad 😟' }//0
+            { text: 'Happy 😃', value:2 },//2
+            { text: 'Neutral😑', value:1 }, //1
+            { text: 'Sad 😟', value:0 }//0
 
         ]
     },
@@ -232,26 +231,26 @@ var questions = {
 
         q: 'What is the occation?',
         a: [
-            { text: 'On a date' },//3
-            { text: 'With friends' },//2
-            { text: 'With family' }, //1
-            { text: 'Alone time' },//0
+            { text: 'On a date', value:3 },//3
+            { text: 'With friends', value: 2 },//2
+            { text: 'With family', value:1 }, //1
+            { text: 'Alone time', value:0 },//0
         ]
-    },//if total is =< 2 chose genre comedy.  2 = animation, 3 = action, 4 = romance
+    },//if total is <= 2 chose genre comedy.  2 = animation, 3 = action, 4 <= romance
     {
         q: 'What genre would you like?',
         a: [
 
-            { text: 'Action' },
-            { text: 'Comedy' },
-            { text: 'Fantasy' },
-            { text: 'Horror' },
-            { text: 'Mystery' },
-            { text: 'Thriller' },
-            { text: 'Western' },
-            { text: 'Drama' },
-            { text: 'Romance' },
-            { text: 'Any 🤷‍♂️'}
+            { text: 'Action', value: 16 },
+            { text: 'Comedy', value: 17 },
+            { text: 'Fantasy', value: 18},
+            { text: 'Horror', value: 19},
+            { text: 'Mystery', value: 20},
+            { text: 'Thriller', value: 21},
+            { text: 'Western', value: 22},
+            { text: 'Drama', value: 23},
+            { text: 'Romance', value: 24},
+            { text: 'Any 🤷‍♂️', value: 0},
 
         ]
     },
@@ -272,7 +271,7 @@ var questions = {
             { text: 'Up to 4 hours' }
         ]
     }
-]}
+]
 
 var welcomeEl = $('#container')
 var questionBox = $('#questionsContainer')
@@ -282,6 +281,8 @@ var answerBtn = $('#answer-buttons')
 var answerEl = []
 var resultsEl = $("#results")
 var questionIndex = 0
+var ansArray = [];
+var ansScore = [];
 var startGame = function () {
     //add classes to show/hide start and quiz screen
     welcomeEl.addClass('hide');
@@ -292,38 +293,84 @@ var startGame = function () {
 }
 $(startButton).on('click', startGame)
 
-var ansArray = [];
+
 
 //Display Question with answer buttons
 function displayQuestion() {
 
-    questionEl.text(questions.questionsArray[questionIndex].q)
+    questionEl.text(questionsArray[questionIndex].q)
     
     answerBtn.html("")
-    for (var i = 0; i < questions.questionsArray[questionIndex].a.length; i++) {
+    for (var i = 0; i < questionsArray[questionIndex].a.length; i++) {
         var btn = $("<button>")
-        btn.text(questions.questionsArray[questionIndex].a[i].text);
-        btn.addClass('"waves-effect waves-teal btn-flat"')
+        var br = $("<br>")
+        btn.text(questionsArray[questionIndex].a[i].text);
+        btn.val(questionsArray[questionIndex].a[i].value);
+        btn.addClass("waves-effect teal waves-light btn effect")
         btn.on("click", selectAnswer)
-        answerBtn.append(btn)
+
+        answerBtn.append(btn, br)
     }
 }
 
 function selectAnswer(event) {
     event.preventDefault();
     console.log(event.target.innerText)
+    console.log(event.target.value)
 
     questionIndex++
-    ansArray.push(event.target)
-    if (questionIndex >= questions.questionsArray[questionIndex].a.length){
+    ansArray.push(event.target.innerText)
+    ansScore.push(parseInt(event.target.value))
+    console.log(ansScore[0])
+    if (questionIndex >= questionsArray[questionIndex].a.length){
         allDone();
 
     } else {
        displayQuestion() 
     }
+   
+    var totalScore = ansScore[0] + ansScore[1] + ansScore[2]
+    console.log("totalScore = " + totalScore)
+    // if(totalScore >= 24 ){
+    //     console.log('Action')
+    // }else if( totalScore >= 23){ 
+    //     console.log("Comedy")
+    // } else if( totalScore >=22){
+    //     console.log("Fantasy")
+    // }else if( totalScore >=21){
+    //     console.log("Horror")
+    // }else if( totalScore >=20){
+    //     console.log("Mystery")
+    // }else if( totalScore >=19){
+    //     console.log("Thriller")
+    // }else if( totalScore >=18){
+    //     console.log("Western")
+    // }else if( totalScore >=17){
+    //     console.log("Drama")
+    // }else if( totalScore >=16){
+    //     console.log("Romance")
+    // }else if(totalScore >= 4){
+    //     console.log("Romance")
+    // }else if( totalScore >=3){
+    //     console.log("animation")
+    // }else if( totalScore >=2){
+    //     console.log("comedy")
+    // }
+    console.log(ansArray)
+if (totalScore>5){
+        console.log(ansArray[2])
+    }else if(totalScore >=4){
+        console.log("romance")
+        }else if (totalScore>=3){
+                console.log("action")
+            }else if (totalScore>=2){
+                    console.log("animation")
+                }else if (totalScore<2){
+                        console.log("comedy")
+                    } 
 
-    
-}
+                }
+
 
 function allDone() {
     questionBox.removeClass('show');
@@ -332,7 +379,7 @@ function allDone() {
     resultsEl.addClass('show')
 }
 
-var answerCheck = 
+// var answerCheck = 
 
 
 
