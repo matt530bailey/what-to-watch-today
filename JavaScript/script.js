@@ -237,6 +237,7 @@ function generateYoutubeVideoUrl(youtubeApi) {
 // -------------------------------------------------------------------------------------
 
 
+
 var questionsArray = [
     {
         q: 'How are you feeling today?',
