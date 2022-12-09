@@ -1,8 +1,8 @@
-#wel8
+#container
 {
     display: block;
     text-align: center;
-    background-image: url("../images/feelings.jpeg") !important;
+    background-image: url("../images/movie2.jpeg") !important;
     background-size: auto   ;
     padding:10%;
     color: white;
@@ -25,7 +25,17 @@
 
 }
 
+.ansbtn{
+    color: white;
+    background-color: rgb(15, 132, 132);
+    padding: 2%;
+    margin: 3px;
+}
 
+#question{
+    font-size: 30px;;
+}
 
-
-#question{}
+.header{
+    margin-bottom: 20px;
+}
