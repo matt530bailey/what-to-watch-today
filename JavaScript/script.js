@@ -203,7 +203,6 @@ function adjustCloseBtn (){
 
 
 // adding questions
-
 var questionsArray = [
     {
         q: 'How are you feeling today?',
@@ -286,7 +285,7 @@ $(startButton).on('click', startGame)
 function displayQuestion() {
 
 
-    questionEl.text(questionsArray[questionIndex].q)
+questionEl.text(questionsArray[questionIndex].q)
     
    answerBtn.html("")
     for (var i = 0; i < questionsArray[questionIndex].a.length; i++) {
@@ -307,12 +306,12 @@ function selectAnswer(event) {
     console.log(event.target.value)
 
     questionIndex++
-
     ansArray.push(event.target.innerText)
     ansScore.push(parseInt(event.target.value))
     console.log(ansScore[0])
-    if (questionIndex >= questionsArray[questionIndex].a.length){
-
+    console.log("array = " + questionsArray.length + "index =" + (questionIndex +1))
+    
+    if ( questionsArray.length < (questionIndex + 1)){
         allDone();
 
     } else {
@@ -349,7 +348,7 @@ function selectAnswer(event) {
     console.log(ansArray)
 if (totalScore>5){
         console.log(ansArray[2])
-    }else if(totalScore >=4){
+    }else if(totalScore >4){
         console.log("romance")
         }else if (totalScore>=3){
                 console.log("action")
@@ -360,7 +359,6 @@ if (totalScore>5){
                     } 
 
                 }
-
 
 
 function allDone() {
