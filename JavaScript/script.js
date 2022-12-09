@@ -309,7 +309,9 @@ function selectAnswer(event) {
     ansArray.push(event.target.innerText)
     ansScore.push(parseInt(event.target.value))
     console.log(ansScore[0])
-    if (questionIndex >= questionsArray[questionIndex].a.length){
+    console.log("array = " + questionsArray.length + "index =" + (questionIndex +1))
+    
+    if ( questionsArray.length < (questionIndex + 1)){
         allDone();
 
     } else {
