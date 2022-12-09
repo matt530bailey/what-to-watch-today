@@ -1,6 +1,26 @@
 #container{
-    background-color: red;
-    background-image: url("../images/movie1.jpg") !important;
-    z-index: 0;
 
-};
+    background-image: url("../images/movie2.jpeg") !important;
+    color:whitesmoke;
+    text-align: center;
+    padding:10%
+
+
+}
+
+#questionsContainer{
+    display: block;
+    text-align: center;
+    background-image: url("../images/moviebackground.jpg") !important;
+    padding:10%;
+    color: white;
+
+
+}
+
+.effect{
+    margin:3px;
+}
+
+
+
