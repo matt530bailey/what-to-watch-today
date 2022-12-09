@@ -1,4 +1,3 @@
-var bodyEl = document.querySelector('body');
 const genreCodeList = {
     ACTION: 28,
     ANIMATION: 16,
@@ -20,30 +19,17 @@ var searchFilter = {
     isAdult: false,
 }
 
-var testingSearchFilter = {
-    movieLength: "200",
-    yearsToNow: "15",
-    genres: [genreCodeList.Action, genreCodeList.Western],
-    isAdult: false,
-}
+// var testingSearchFilter = {
+//     movieLength: "200",
+//     yearsToNow: "15",
+//     genres: [28, 9648],
+//     isAdult: false,
+// }
 
-
-
-console.log(testingSearchFilter.genres)
 var currentYear = dayjs().format('YYYY');
-var yearBefore = currentYear - searchFilter.yearsToNow;
-var releaseDateBefore = yearBefore + '-12-31';
+
 var localMovieData = [];
 var youtubeVideoUrl = "";
-// var movieInfo = {
-//     index: 0,
-//     title: '',
-//     overview: '',
-//     releaseDate: '',
-//     rating: '',
-//     posterPath: '',
-//     movieID: '',
-// };
 
 $(document).ready(function () {
     $('.modal').modal({
@@ -59,9 +45,8 @@ $(document).ready(function () {
 });
 
 // get rough data from TMDB API
-var getTMDBApi = function (searchResults) {
-    var testingUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=337b93ffd45a2b68e431aed64d687099&language=en-US&sort_by=popularity.desc&include_adult=' + searchResults.isAdult + '&release_date.lte=' + releaseDateBefore + '&with_runtime.lte=' + searchResults.movieLength + '&with_genres=' + searchResults.genres.toString()
-
+var getTMDBApi = function (isAdult, yearsToNow, runTimeMinutes, genres) {
+    var testingUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=337b93ffd45a2b68e431aed64d687099&language=en-US&sort_by=popularity.desc&include_adult=' + isAdult + '&release_date.gte=' + yearsToNow + '-01-01&with_runtime.lte=' + runTimeMinutes + '&with_genres=' + genres.toString()
     console.log(testingUrl)
     fetch(testingUrl)
         .then(function (response) {
@@ -87,24 +72,23 @@ function getTMDBDetail(movieData) {
         var movieResult = movieData.results[i]
         console.log(movieResult);
         console.log(localMovieData.length)
-        // call the function to write info in an object
         // generateInfo(movieResult);
         createCardComponents(movieResult)
         addButtonsPlusClickEvents($("#" + localMovieData.length));
         localMovieData.push(movieResult);
-        console.log(localMovieData);
-        storeMovieData(localMovieData)
-        // console.log(movieInfo.index)
-        // console.log(movieInfo)
+        saveFullData(localMovieData)
     }
-    // return
 }
 // push objects to an array to save in local storage
-function storeMovieData(localMovieData) {
+function saveFullData(localMovieData) {
     var movieInfoString = JSON.stringify(localMovieData);
-    localStorage.setItem("storedMovieData", movieInfoString);
+    localStorage.setItem("localMovieData", movieInfoString);
 }
 
+function saveSearchFilter(searchFilter) {
+    var searchFilterString = JSON.stringify(searchFilter);
+    localStorage.setItem("localSearchFilter", searchFilterString);
+}
 // function generateInfo(movieData) {
 //     // getting movie info from TMDB API and save in an object
 //     movieInfo.title = movieData.title
@@ -120,19 +104,21 @@ function storeMovieData(localMovieData) {
 // This function to create a template to add card elements in html file
 function createCardComponents(movieInfo) {
     $(".cardContainer").append(`
-        <div class="col s12 m6 l4">
+
+        <div class="col s10 m5 l2">
             <div class="card large card-panel grey lighten-5">
                 <div class="card-image">
                     <img src='https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${movieInfo.poster_path}'>
-                        <span class="card-title" style='background-color: rgba(0,0,0,0.6)'>${movieInfo.title}</span>
+                        <span class="card-title" style='background-color: rgba(0,0,0,0.6); font-weight: bold'>${movieInfo.title}</span>
                 </div>
-                <div class="card-content" style="overflow:scroll">
+                <div class="card-content" style="overflow:scroll; line-height:1.5">
                     <p>${movieInfo.overview}</p>
                 </div>
                 <div class="card-action" id="${localMovieData.length}">
                 </div>
             </div>
         </div>
+  
     `);
 }
 
@@ -148,7 +134,6 @@ function addButtonsPlusClickEvents(returnValue) {
     trailerBtnEl.append(iconEl)
     returnValue.append(trailerBtnEl)
     returnValue.click(showYouTubeTrailer)
-    // movieInfo.index += 1
 }
 
 function stopVideo() {
@@ -232,14 +217,14 @@ var questionsArray = [
 
             { text: 'Action', value: 28 },
             { text: 'Comedy', value: 35 },
-            { text: 'Fantasy', value: 14},
-            { text: 'Horror', value: 27},
-            { text: 'Mystery', value: 9648},
-            { text: 'Thriller', value: 53},
-            { text: 'Western', value: 37},
-            { text: 'Drama', value: 18},
-            { text: 'Romance', value: 10749},
-            { text: 'Any 🤷‍♂️', value: 0},
+            { text: 'Fantasy', value: 14 },
+            { text: 'Horror', value: 27 },
+            { text: 'Mystery', value: 9648 },
+            { text: 'Thriller', value: 53 },
+            { text: 'Western', value: 37 },
+            { text: 'Drama', value: 18 },
+            { text: 'Romance', value: 10749 },
+            { text: 'Any 🤷‍♂️', value: 0 },
 
         ]
     },
@@ -257,7 +242,7 @@ var questionsArray = [
         a: [
             { text: 'Up to 2 hours', min: 120 },
             { text: 'Up to 3 hours', min: 180 },
-            { text: 'Up to 4 hours', min: 240}
+            { text: 'Up to 4 hours', min: 240 }
         ]
     }
 ]
@@ -311,27 +296,25 @@ function selectAnswer(event) {
     console.log(event.target.value)
 
     questionIndex++
-    if (event.target.getAttribute('data-years')){
-        searchFilter.yearsToNow = event.target.getAttribute('data-years')
+    if (event.target.getAttribute('data-years')) {
+        searchFilter.yearsToNow = currentYear - event.target.getAttribute('data-years')
         console.log(event.target.getAttribute('data-years'))
     }
 
-    if (event.target.getAttribute('data-min')){
+    if (event.target.getAttribute('data-min')) {
         searchFilter.movieLength = event.target.getAttribute('data-min')
     }
-
 
 
     ansArray.push(event.target.innerText)
     ansScore.push(parseInt(event.target.value))
 
     console.log(ansScore)
-    
-    if ( questionsArray.length < (questionIndex + 1)){
+
+    if (questionsArray.length < (questionIndex + 1)) {
         allDone();
-        getTMDBApi(searchFilter) 
-
-
+        saveSearchFilter(searchFilter)
+        getTMDBApi(searchFilter.isAdult, searchFilter.yearsToNow, searchFilter.movieLength, searchFilter.genres)
     } else {
         displayQuestion()
     }
@@ -364,38 +347,39 @@ function selectAnswer(event) {
     //     console.log("comedy")
     // }
 
-var genre = ""
-if (totalScore>5){
-     searchFilter.genres = ansScore[2]
-    console.log(ansScore [2])
-    }else if(totalScore >4){
-      
+    var genre = ""
+    if (totalScore > 5) {
+        searchFilter.genres = ansScore[2]
+        console.log(ansScore[2])
+    } else if (totalScore > 4) {
+
         searchFilter.genres = genreCodeList.ROMANCE// console.log("romance")
-        }else if (totalScore>3){
-      
-            searchFilter.genres = genreCodeList.ACTION// console.log("action")
-            }else if (totalScore>=2){
-              
-                searchFilter.genres = genreCodeList.ANIMATION 
-                console.log(genreCodeList.ANIMATION)
-                }else if (totalScore<2){
-                
-                    searchFilter.genres = genreCodeList.COMEDY// console.log("com
-                    } 
+    } else if (totalScore > 3) {
+
+        searchFilter.genres = genreCodeList.ACTION// console.log("action")
+    } else if (totalScore >= 2) {
+
+        searchFilter.genres = genreCodeList.ANIMATION
+        console.log(genreCodeList.ANIMATION)
+    } else if (totalScore < 2) {
+
+        searchFilter.genres = genreCodeList.COMEDY// console.log("com
+    }
 
 
 }
 
 
 function allDone() {
+    var redirectUrl = './searchResults.html';
+
     questionBox.removeClass('show');
     questionBox.addClass('hide');
     resultsEl.removeClass('hide');
     resultsEl.addClass('show')
+    // document.location.replace(redirectUrl);
+
 }
-
-// var answerCheck = 
-
 
 
 
@@ -407,6 +391,4 @@ console.log(ansArray)
 
 // excute functions
 adjustCloseBtn()
-
 // creatCardsFromStorage()
-// testingTMDBApi(testingSearchFilter)
