@@ -1,17 +1,16 @@
 var bodyEl = document.querySelector('body');
 const genreCodeList = {
-    Action: 28,
-    Animation: 16,
-    Comedy: 35,
-    Drama: 18,
-    Family: 10751,
-    Fantasy: 14,
-    Horror: 27,
-    Mystery: 9648,
-    Romance: 10749,
+    ACTION: 28,
+    ANIMATION: 16,
+    COMEDY: 35,
+    DRAMA: 18,
+    FAMILY: 10751,
+    FANTASY: 14,
+    HORROR: 27,
+    MYSTERY: 9648,
+    ROMANCE: 10749,
     THRILLER: 53,
     WESTERN: 37,
-    ALL: "28,16,35,18,10751,14,27,9648,10749,53,37"
 }
 
 var searchFilter = {
@@ -32,7 +31,7 @@ var testingSearchFilter = {
 
 console.log(testingSearchFilter.genres)
 var currentYear = dayjs().format('YYYY');
-var yearBefore = currentYear - testingSearchFilter.yearsToNow;
+var yearBefore = currentYear - searchFilter.yearsToNow;
 var releaseDateBefore = yearBefore + '-12-31';
 var localMovieData = [];
 var youtubeVideoUrl = "";
@@ -231,34 +230,34 @@ var questionsArray = [
         q: 'What genre would you like?',
         a: [
 
-            { text: 'Action', value: 16, genre: 28 },
-            { text: 'Comedy', value: 17, genre: 35 },
-            { text: 'Fantasy', value: 18, genre: 14 },
-            { text: 'Horror', value: 19, genre: 27 },
-            { text: 'Mystery', value: 20, genre: 9648 },
-            { text: 'Thriller', value: 21, genre: 53 },
-            { text: 'Western', value: 22, genre: 37 },
-            { text: 'Drama', value: 23, genre: 18 },
-            { text: 'Romance', value: 24, genre: 10749 },
-            { text: 'Any 🤷‍♂️', value: 0, genre: '28,16,35,18,10751,14,27,9648,10749,53,37' },
+            { text: 'Action', value: 28 },
+            { text: 'Comedy', value: 35 },
+            { text: 'Fantasy', value: 14},
+            { text: 'Horror', value: 27},
+            { text: 'Mystery', value: 9648},
+            { text: 'Thriller', value: 53},
+            { text: 'Western', value: 37},
+            { text: 'Drama', value: 18},
+            { text: 'Romance', value: 10749},
+            { text: 'Any 🤷‍♂️', value: 0},
 
         ]
     },
     {
         q: 'How old would you like the movie to be?',
         a: [
-            { text: 'One year or less', yearToNow: 1 },
-            { text: 'Five years or less', yearToNow: 5 },
-            { text: 'Ten years or less', yearToNow: 10 },
-            { text: 'Twenty years or less', yearToNow: 20 }
+            { text: 'One year or less', years: 1 },
+            { text: 'Five years or less', years: 5 },
+            { text: 'Ten years or less', years: 10 },
+            { text: 'Twenty years or less', years: 20 }
         ]
     },
     {
         q: 'How long would would you like the movie to be?',
         a: [
-            { text: 'Up to 2 hours', minutes: 120 },
-            { text: 'Up to 3 hours', minutes: 180 },
-            { text: 'Up to 4 hours', minutes: 240 }
+            { text: 'Up to 2 hours', min: 120 },
+            { text: 'Up to 3 hours', min: 180 },
+            { text: 'Up to 4 hours', min: 240}
         ]
     }
 ]
@@ -297,9 +296,8 @@ function displayQuestion() {
         var br = $("<br>")
         btn.text(questionsArray[questionIndex].a[i].text);
         btn.val(questionsArray[questionIndex].a[i].value);
-        btn.attr('data-genre', questionsArray[questionIndex].a[i].genre);
-        btn.attr('data-year', questionsArray[questionIndex].a[i].yearToNow)
-        btn.attr('data-min', questionsArray[questionIndex].a[i].minutes)
+        btn.attr("data-years", questionsArray[questionIndex].a[i].years)
+        btn.attr("data-min", questionsArray[questionIndex].a[i].min)
         btn.addClass("waves-effect teal waves-light btn effect")
         btn.on("click", selectAnswer)
 
@@ -313,26 +311,26 @@ function selectAnswer(event) {
     console.log(event.target.value)
 
     questionIndex++
+    if (event.target.getAttribute('data-years')){
+        searchFilter.yearsToNow = event.target.getAttribute('data-years')
+        console.log(event.target.getAttribute('data-years'))
+    }
+
+    if (event.target.getAttribute('data-min')){
+        searchFilter.movieLength = event.target.getAttribute('data-min')
+    }
+
+
+
     ansArray.push(event.target.innerText)
     ansScore.push(parseInt(event.target.value))
-    if (event.target.genre) {
-        searchFilter.genres.push(event.target.genre)
-        console.log(searchFilter.genres)
-    }
-    if (event.target.yearToNow) {
-        searchFilter.yearsToNow = event.target.yearToNow
-        console.log(searchFilter.yearsToNow)
-    }
-    if (event.target.minutes) {
-        searchFilter.movieLength = event.target.minutes
-        console.log(searchFilter.movieLength)
-    }
-    console.log(ansScore[0])
-    console.log("array = " + questionsArray.length + "index =" + (questionIndex + 1))
 
-    if (questionsArray.length < (questionIndex + 1)) {
+    console.log(ansScore)
+    
+    if ( questionsArray.length < (questionIndex + 1)){
         allDone();
-        getTMDBApi(searchFilter)
+        getTMDBApi(searchFilter) 
+
 
     } else {
         displayQuestion()
@@ -365,19 +363,25 @@ function selectAnswer(event) {
     // }else if( totalScore >=2){
     //     console.log("comedy")
     // }
-    console.log(ansArray)
-    var genres = ""
-    if (totalScore > 5) {
-        console.log(ansArray[2])
-    } else if (totalScore > 4) {
-        console.log("romance")
-    } else if (totalScore >= 3) {
-        console.log("action")
-    } else if (totalScore >= 2) {
-        console.log("animation")
-    } else if (totalScore < 2) {
-        console.log("comedy")
-    }
+
+var genre = ""
+if (totalScore>5){
+     searchFilter.genres = ansScore[2]
+    console.log(ansScore [2])
+    }else if(totalScore >4){
+      
+        searchFilter.genres = genreCodeList.ROMANCE// console.log("romance")
+        }else if (totalScore>3){
+      
+            searchFilter.genres = genreCodeList.ACTION// console.log("action")
+            }else if (totalScore>=2){
+              
+                searchFilter.genres = genreCodeList.ANIMATION 
+                console.log(genreCodeList.ANIMATION)
+                }else if (totalScore<2){
+                
+                    searchFilter.genres = genreCodeList.COMEDY// console.log("com
+                    } 
 
 
 }
