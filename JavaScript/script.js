@@ -259,7 +259,7 @@ var questionsArray = [
     }
 ]
 
-var welcomeEl = $('#container')
+var welcomeEl = $('.container')
 var questionBox = $('#questionsContainer')
 var startButton = $('#startBtn')
 var questionEl = $('#question')

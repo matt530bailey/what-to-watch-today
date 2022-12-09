@@ -1,11 +1,18 @@
-#container{
-
-    background-image: url("../images/movie2.jpeg") !important;
-    color:whitesmoke;
+#wel8
+{
+    display: block;
     text-align: center;
+    background-image: url("../images/feelings.jpeg") !important;
+    background-size: auto   ;
     padding:10%;
+    color: white;
+    margin:0;
 
 
+}
+
+#welcomeTitle{
+    font-size:40px
 }
 
 #questionsContainer{
@@ -18,12 +25,7 @@
 
 }
 
-.effect{
-    margin:3px;
 
-    background-color: red;
-    background-image: url("../images/movie1.jpg") !important;
-    z-index: 0;
 
-};
 
+#question{}
