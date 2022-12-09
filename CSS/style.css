@@ -1,4 +1,5 @@
 #container{
+<<<<<<< HEAD
     background-image: url("../images/movie2.jpeg") !important;
     color:whitesmoke;
     text-align: center;
@@ -18,3 +19,10 @@
 .effect{
     margin:3px;
 }
+=======
+    background-color: red;
+    background-image: url("../images/movie1.jpg") !important;
+    z-index: 0;
+
+};
+>>>>>>> main
