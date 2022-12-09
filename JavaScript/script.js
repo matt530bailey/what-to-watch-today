@@ -9,8 +9,9 @@ const genreCodeList = {
     Horror: 27,
     Mystery: 9648,
     Romance: 10749,
-    Thriller: 53,
-    Western: 37,
+    THRILLER: 53,
+    WESTERN: 37,
+    ALL: "28,16,35,18,10751,14,27,9648,10749,53,37"
 }
 
 var searchFilter = {
@@ -313,6 +314,7 @@ function selectAnswer(event) {
     
     if ( questionsArray.length < (questionIndex + 1)){
         allDone();
+        getTMDBApi(searchFilter)
 
     } else {
         displayQuestion()
@@ -357,7 +359,9 @@ if (totalScore>5){
                 }else if (totalScore<2){
                         console.log("comedy")
                     } 
-
+searchFilter.genres = ansArray
+// searchFilter.movieLength = 
+// searchFilter.yearsToNow =
                 }
 
 
@@ -381,7 +385,6 @@ console.log(ansArray)
 
 // excute functions
 adjustCloseBtn()
-getTMDBApi(testingSearchFilter)
 
 // creatCardsFromStorage()
 // testingTMDBApi(testingSearchFilter)
