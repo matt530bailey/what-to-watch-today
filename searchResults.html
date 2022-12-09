@@ -13,7 +13,7 @@
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./CSS/style.css" />
-    <title>Document</title>
+    <title>Check out your movies!</title>
 </head>
 
 <body>
@@ -44,55 +44,23 @@
         <li><a href='https://www.imdb.com/'>IMDb</a></li>
     </ul>
 
-    <!-- Welcome Screen -->
-
-    <section id="container" class="card z-depth-5 show">
-        <div>
-            <h1 id="welcomeTitle">See Movies For You</h1>
-            <p id="intro" class="header col s12 light">Click on the Start Button to begin and find the best movie for
-                you today</p>
-
-            <button id="startBtn" class="btn-large waves-effect waves-light teal lighten-1">Start</button>
-        </div>
-
-    </section>
-    <!-- questions -->
-    <section id="questionsContainer" class="hide">
-        <div class="questionClass">
-            <h1 id="question"> This is an Example if a Question</h1>
-            <div>
-                <div id="answer-buttons" class="row">
-
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- results -->
-
-    <section id="results" class="hide">
-        <div class="lastContainer">
-            <div class="results"></div>
-        </div>
-    </section>
 
     <main>
         <!-- This is a section for search results -->
         <div class="row">
             <div class="col s1 m1 l1"></div>
-            <div class="col s1 m1 l1"></div>
-            <div class="col s10 m10 l10">
-                <section class='cardContainer row'>
+            <section class='cardContainer row'>
 
-                </section>
-            </div>
+            </section>
+            <div class="col s1 m1 l1"></div>
         </div>
         <!-- This is a section for modal to play trailers -->
         <section>
             <!-- Modal Structure -->
-            <div id="modal1" class="modal" style="padding:0px; width:100%; height:auto; overflow:visible;">
+            <div id="modal1" class="modal" style="padding:0px; width:450px; height:300px; overflow:visible;">
                 <a class="btn-floating btn-small waves-effect waves-light red" id="closebutton"><i
                         class="material-icons modal-close">close</i></a>
-                <iframe id="video-player" frameborder="0" style="width:100%px; height:auto; overflow:visible;" src="">
+                <iframe id="video-player" frameborder="0" style="width:450px; height:300px; overflow:visible;" src="">
                 </iframe>
             </div>
         </section>
@@ -106,7 +74,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
     <script>dayjs().format()</script>
-    <script src="./JavaScript/script.js"></script>
+    <script src="./JavaScript/search.js"></script>
 </body>
 
 
