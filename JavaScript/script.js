@@ -55,10 +55,6 @@ $(document).ready(function () {
     $('.sidenav').sidenav();
 });
 
-$(document).ready(function(){
-    $('.sidenav').sidenav();
-  });
-
 // get rough data from TMDB API
 var getTMDBApi = function (searchResults) {
     var testingUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=337b93ffd45a2b68e431aed64d687099&language=en-US&sort_by=popularity.desc&include_adult=' + searchResults.isAdult + '&release_date.lte=' + releaseDateBefore + '&with_runtime.lte=' + searchResults.movieLength + '&with_genres=' + searchResults.genres.toString()
@@ -198,34 +194,10 @@ function generateYoutubeVideoUrl(youtubeApi) {
     console.log(youtubeVideoUrl)
     addVideoPlayer(youtubeVideoUrl)
 }
-
-// class DynamicElement {
-//     constructor(elType, elContent, elClass, elId, elstyle, elSrc, elHref) {
-//         this.el = document.createElement(elType)
-//         if(elContent){this.el.innerText = elContent}
-//         if(elClass){this.el.setAttribute('class', elClass)}
-//         if(elId){this.el.setAttribute('id', elId)}
-//         if(elstyle){this.el.setAttribute('style', elstyle)}
-//         if(elSrc){this.el.setAttribute('src', elSrc)}
-//         if(elHref){this.el.setAttribute('href', elHref)} 
-//         console.log(this.el)
-//         return this.el
-//     } 
-//     // returnEl () {
-//     //     return this.el
-//     // }
-// }
-
-// var cardHolderEl = new DynamicElement('div',"", 'col s12 m6 l4')
-// var cardEl = new DynamicElement('div', '', 'card large card-panel grey lighten-5')
-// var imgHolderEl = new DynamicElement('div', '', 'card-image')
-// var imgEl = new DynamicElement('img', '', '', '', '', './images/movie1.jpg')
-// var cardContainerEl = $('.cardContainer')
-
-// cardContainerEl.append(cardHolderEl)
-// cardHolderEl.append(cardEl)
-// cardEl.append(imgHolderEl)
-// imgHolderEl.append(imgEl)
+function adjustCloseBtn (){
+    var closeBtnEl = $('#closebutton')
+    closeBtnEl.css({'position':'absolute', 'top':'-30px', 'right':'-30px'})
+}
 
 // -------------------------------------------------------------------------------------
 
@@ -239,9 +211,9 @@ var questionsArray = [
             { text: 'Neutral😑', value:1 }, //1
             { text: 'Sad 😟', value:0 }//0
 
-            ]
-        },
-        {
+        ]
+    },
+    {
 
         q: 'What is the occation?',
         a: [
@@ -312,9 +284,10 @@ $(startButton).on('click', startGame)
 //Display Question with answer buttons
 function displayQuestion() {
 
-    questionEl.text(questionsArray[questionIndex].q)
+
+questionEl.text(questionsArray[questionIndex].q)
     
-    answerBtn.html("")
+   answerBtn.html("")
     for (var i = 0; i < questionsArray[questionIndex].a.length; i++) {
         var btn = $("<button>")
         var br = $("<br>")
@@ -405,6 +378,7 @@ function allDone() {
 console.log(ansArray)
 
 // excute functions
+adjustCloseBtn()
 getTMDBApi(testingSearchFilter)
 
 // creatCardsFromStorage()
