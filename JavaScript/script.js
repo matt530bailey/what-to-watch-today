@@ -27,6 +27,9 @@ var testingSearchFilter = {
     genres: [genreCodeList.Action, genreCodeList.Western],
     isAdult: false,
 }
+
+
+
 console.log(testingSearchFilter.genres)
 var currentYear = dayjs().format('YYYY');
 var yearBefore = currentYear - testingSearchFilter.yearsToNow;
@@ -49,8 +52,8 @@ $(document).ready(function () {
         opacity: 0.6,
         onCloseStart: stopVideo,
     },
-  );
-  })
+    );
+})
 
 $(document).ready(function () {
     $('.sidenav').sidenav();
@@ -83,22 +86,22 @@ var getTMDBApi = function (searchResults) {
 function getTMDBDetail(movieData) {
     for (let i = 0; i < movieData.results.length; i++) {
         var movieResult = movieData.results[i]
-                        console.log(movieResult);
-                        console.log(localMovieData.length)
-                        // call the function to write info in an object
-                        // generateInfo(movieResult);
-                        createCardComponents(movieResult)
-                        addButtonsPlusClickEvents($("#" + localMovieData.length));
-                        localMovieData.push(movieResult);
-                        console.log(localMovieData);
-                        storeMovieData(localMovieData)
-                        // console.log(movieInfo.index)
-                        // console.log(movieInfo)
+        console.log(movieResult);
+        console.log(localMovieData.length)
+        // call the function to write info in an object
+        // generateInfo(movieResult);
+        createCardComponents(movieResult)
+        addButtonsPlusClickEvents($("#" + localMovieData.length));
+        localMovieData.push(movieResult);
+        console.log(localMovieData);
+        storeMovieData(localMovieData)
+        // console.log(movieInfo.index)
+        // console.log(movieInfo)
     }
     // return
 }
 // push objects to an array to save in local storage
-function storeMovieData (localMovieData) {
+function storeMovieData(localMovieData) {
     var movieInfoString = JSON.stringify(localMovieData);
     localStorage.setItem("storedMovieData", movieInfoString);
 }
@@ -195,9 +198,9 @@ function generateYoutubeVideoUrl(youtubeApi) {
     console.log(youtubeVideoUrl)
     addVideoPlayer(youtubeVideoUrl)
 }
-function adjustCloseBtn (){
+function adjustCloseBtn() {
     var closeBtnEl = $('#closebutton')
-    closeBtnEl.css({'position':'absolute', 'top':'-30px', 'right':'-30px'})
+    closeBtnEl.css({ 'position': 'absolute', 'top': '-30px', 'right': '-30px' })
 }
 
 // -------------------------------------------------------------------------------------
@@ -208,9 +211,9 @@ var questionsArray = [
     {
         q: 'How are you feeling today?',
         a: [
-            { text: 'Happy 😃', value:2 },//2
-            { text: 'Neutral😑', value:1 }, //1
-            { text: 'Sad 😟', value:0 }//0
+            { text: 'Happy 😃', value: 2 },//2
+            { text: 'Neutral😑', value: 1 }, //1
+            { text: 'Sad 😟', value: 0 }//0
 
         ]
     },
@@ -218,44 +221,44 @@ var questionsArray = [
 
         q: 'What is the occation?',
         a: [
-            { text: 'On a date', value:3 },//3
+            { text: 'On a date', value: 3 },//3
             { text: 'With friends', value: 2 },//2
-            { text: 'With family', value:1 }, //1
-            { text: 'Alone time', value:0 },//0
+            { text: 'With family', value: 1 }, //1
+            { text: 'Alone time', value: 0 },//0
         ]
     },//if total is <= 2 chose genre comedy.  2 = animation, 3 = action, 4 <= romance
     {
         q: 'What genre would you like?',
         a: [
 
-            { text: 'Action', value: 16 },
-            { text: 'Comedy', value: 17 },
-            { text: 'Fantasy', value: 18},
-            { text: 'Horror', value: 19},
-            { text: 'Mystery', value: 20},
-            { text: 'Thriller', value: 21},
-            { text: 'Western', value: 22},
-            { text: 'Drama', value: 23},
-            { text: 'Romance', value: 24},
-            { text: 'Any 🤷‍♂️', value: 0},
+            { text: 'Action', value: 16, genre: 28 },
+            { text: 'Comedy', value: 17, genre: 35 },
+            { text: 'Fantasy', value: 18, genre: 14 },
+            { text: 'Horror', value: 19, genre: 27 },
+            { text: 'Mystery', value: 20, genre: 9648 },
+            { text: 'Thriller', value: 21, genre: 53 },
+            { text: 'Western', value: 22, genre: 37 },
+            { text: 'Drama', value: 23, genre: 18 },
+            { text: 'Romance', value: 24, genre: 10749 },
+            { text: 'Any 🤷‍♂️', value: 0, genre: '28,16,35,18,10751,14,27,9648,10749,53,37' },
 
         ]
     },
     {
         q: 'How old would you like the movie to be?',
         a: [
-            { text: 'One year or less' },
-            { text: 'Five years or less' },
-            { text: 'Ten years or less' },
-            { text: 'Twenty years or less' }
+            { text: 'One year or less', yearToNow: 1 },
+            { text: 'Five years or less', yearToNow: 5 },
+            { text: 'Ten years or less', yearToNow: 10 },
+            { text: 'Twenty years or less', yearToNow: 20 }
         ]
     },
     {
         q: 'How long would would you like the movie to be?',
         a: [
-            { text: 'Up to 2 hours' },
-            { text: 'Up to 3 hours' },
-            { text: 'Up to 4 hours' }
+            { text: 'Up to 2 hours', minutes: 120 },
+            { text: 'Up to 3 hours', minutes: 180 },
+            { text: 'Up to 4 hours', minutes: 240 }
         ]
     }
 ]
@@ -286,14 +289,17 @@ $(startButton).on('click', startGame)
 function displayQuestion() {
 
 
-questionEl.text(questionsArray[questionIndex].q)
-    
-   answerBtn.html("")
+    questionEl.text(questionsArray[questionIndex].q)
+
+    answerBtn.html("")
     for (var i = 0; i < questionsArray[questionIndex].a.length; i++) {
         var btn = $("<button>")
         var br = $("<br>")
         btn.text(questionsArray[questionIndex].a[i].text);
         btn.val(questionsArray[questionIndex].a[i].value);
+        btn.attr('data-genre', questionsArray[questionIndex].a[i].genre);
+        btn.attr('data-year', questionsArray[questionIndex].a[i].yearToNow)
+        btn.attr('data-min', questionsArray[questionIndex].a[i].minutes)
         btn.addClass("waves-effect teal waves-light btn effect")
         btn.on("click", selectAnswer)
 
@@ -309,17 +315,29 @@ function selectAnswer(event) {
     questionIndex++
     ansArray.push(event.target.innerText)
     ansScore.push(parseInt(event.target.value))
+    if (event.target.genre) {
+        searchFilter.genres.push(event.target.genre)
+        console.log(searchFilter.genres)
+    }
+    if (event.target.yearToNow) {
+        searchFilter.yearsToNow = event.target.yearToNow
+        console.log(searchFilter.yearsToNow)
+    }
+    if (event.target.minutes) {
+        searchFilter.movieLength = event.target.minutes
+        console.log(searchFilter.movieLength)
+    }
     console.log(ansScore[0])
-    console.log("array = " + questionsArray.length + "index =" + (questionIndex +1))
-    
-    if ( questionsArray.length < (questionIndex + 1)){
+    console.log("array = " + questionsArray.length + "index =" + (questionIndex + 1))
+
+    if (questionsArray.length < (questionIndex + 1)) {
         allDone();
         getTMDBApi(searchFilter)
 
     } else {
         displayQuestion()
     }
-   
+
     var totalScore = ansScore[0] + ansScore[1] + ansScore[2]
     console.log("totalScore = " + totalScore)
     // if(totalScore >= 24 ){
@@ -348,21 +366,21 @@ function selectAnswer(event) {
     //     console.log("comedy")
     // }
     console.log(ansArray)
-if (totalScore>5){
+    var genres = ""
+    if (totalScore > 5) {
         console.log(ansArray[2])
-    }else if(totalScore >4){
+    } else if (totalScore > 4) {
         console.log("romance")
-        }else if (totalScore>=3){
-                console.log("action")
-            }else if (totalScore>=2){
-                    console.log("animation")
-                }else if (totalScore<2){
-                        console.log("comedy")
-                    } 
-searchFilter.genres = ansArray
-// searchFilter.movieLength = 
-// searchFilter.yearsToNow =
-                }
+    } else if (totalScore >= 3) {
+        console.log("action")
+    } else if (totalScore >= 2) {
+        console.log("animation")
+    } else if (totalScore < 2) {
+        console.log("comedy")
+    }
+
+
+}
 
 
 function allDone() {
