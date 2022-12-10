@@ -1,11 +1,21 @@
-#container{
-
-    background-image: url("../images/movie2.jpeg") !important;
-    color:whitesmoke;
+#container
+{
+    box-sizing: border-box;
     text-align: center;
-    padding:10%;
+    background-image: url("../images/movie2.jpeg") !important;
+    background-size: cover;
+    padding: 200px;
+    color: white;
+    margin:0%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    
 
 
+}
+
+#welcomeTitle{
+    font-size:40px
 }
 
 #questionsContainer{
@@ -18,12 +28,28 @@
 
 }
 
-.effect{
-    margin:3px;
+.ansbtn{
+    color: white;
+    background-color: rgb(15, 132, 132);
+    padding: 2%;
+    margin: 3px;
+}
 
-    background-color: red;
-    background-image: url("../images/movie1.jpg") !important;
-    z-index: 0;
+#question{
+    font-size: 30px;;
+}
 
-};
+.header{
+    margin-bottom: 20px;
+}
 
+#results{
+    text-align: center;
+}
+
+#reset{
+
+    margin-bottom: 1%;
+    margin-top: 5%;
+    text-align: center;
+}

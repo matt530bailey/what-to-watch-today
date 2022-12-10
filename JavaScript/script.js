@@ -190,7 +190,7 @@ function adjustCloseBtn() {
 // -------------------------------------------------------------------------------------
 
 
-// adding questions
+// adding questions with values
 var questionsArray = [
     {
         q: 'How are you feeling today?',
@@ -203,14 +203,14 @@ var questionsArray = [
     },
     {
 
-        q: 'What is the occation?',
+        q: 'What is the occasion?',
         a: [
             { text: 'On a date', value: 3 },//3
             { text: 'With friends', value: 2 },//2
             { text: 'With family', value: 1 }, //1
             { text: 'Alone time', value: 0 },//0
         ]
-    },//if total is <= 2 chose genre comedy.  2 = animation, 3 = action, 4 <= romance
+    },
     {
         q: 'What genre would you like?',
         a: [
@@ -247,17 +247,22 @@ var questionsArray = [
     }
 ]
 
+//variables
 var welcomeEl = $('#container')
 var questionBox = $('#questionsContainer')
 var startButton = $('#startBtn')
 var questionEl = $('#question')
 var answerBtn = $('#answer-buttons')
+var resetBtn =  $('#reset')
 var answerEl = []
 var resultsEl = $("#results")
 var questionIndex = 0
 var ansArray = [];
 var ansScore = [];
+
+// after start button is pressed
 var startGame = function () {
+
     //add classes to show/hide start and quiz screen
     welcomeEl.addClass('hide');
     welcomeEl.removeClass('show');
@@ -283,13 +288,14 @@ function displayQuestion() {
         btn.val(questionsArray[questionIndex].a[i].value);
         btn.attr("data-years", questionsArray[questionIndex].a[i].years)
         btn.attr("data-min", questionsArray[questionIndex].a[i].min)
-        btn.addClass("waves-effect teal waves-light btn effect")
+        btn.addClass("waves-effect waves-light ansbtn effect")
         btn.on("click", selectAnswer)
 
         answerBtn.append(btn, br)
     }
 }
 
+//what happens when answer is chosen
 function selectAnswer(event) {
     event.preventDefault();
     console.log(event.target.innerText)
@@ -311,6 +317,7 @@ function selectAnswer(event) {
 
     console.log(ansScore)
 
+    // end cycle of questions
     if (questionsArray.length < (questionIndex + 1)) {
         allDone();
         saveSearchFilter(searchFilter)
@@ -321,55 +328,31 @@ function selectAnswer(event) {
 
     var totalScore = ansScore[0] + ansScore[1] + ansScore[2]
     console.log("totalScore = " + totalScore)
-    // if(totalScore >= 24 ){
-    //     console.log('Action')
-    // }else if( totalScore >= 23){ 
-    //     console.log("Comedy")
-    // } else if( totalScore >=22){
-    //     console.log("Fantasy")
-    // }else if( totalScore >=21){
-    //     console.log("Horror")
-    // }else if( totalScore >=20){
-    //     console.log("Mystery")
-    // }else if( totalScore >=19){
-    //     console.log("Thriller")
-    // }else if( totalScore >=18){
-    //     console.log("Western")
-    // }else if( totalScore >=17){
-    //     console.log("Drama")
-    // }else if( totalScore >=16){
-    //     console.log("Romance")
-    // }else if(totalScore >= 4){
-    //     console.log("Romance")
-    // }else if( totalScore >=3){
-    //     console.log("animation")
-    // }else if( totalScore >=2){
-    //     console.log("comedy")
-    // }
 
-    var genre = ""
+
+// If statement to get genres.  If user chooses a genre on question 3, it overwrites the chosen genre based on the first two questions.
     if (totalScore > 5) {
         searchFilter.genres = ansScore[2]
         console.log(ansScore[2])
     } else if (totalScore > 4) {
 
-        searchFilter.genres = genreCodeList.ROMANCE// console.log("romance")
+        searchFilter.genres = genreCodeList.ROMANCE
     } else if (totalScore > 3) {
 
-        searchFilter.genres = genreCodeList.ACTION// console.log("action")
+        searchFilter.genres = genreCodeList.ACTION
     } else if (totalScore >= 2) {
 
         searchFilter.genres = genreCodeList.ANIMATION
         console.log(genreCodeList.ANIMATION)
     } else if (totalScore < 2) {
 
-        searchFilter.genres = genreCodeList.COMEDY// console.log("com
+        searchFilter.genres = genreCodeList.COMEDY
     }
 
 
 }
 
-
+// once the questions are answered
 function allDone() {
     var redirectUrl = './searchResults.html';
 
@@ -385,7 +368,9 @@ function allDone() {
 
 
 
-
+$(resetBtn).click(function() {
+    location.reload();
+})
 
 console.log(ansArray)
 
