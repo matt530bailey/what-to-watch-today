@@ -1,27 +1,15 @@
-// const genreCodeList = {
-//     ACTION: 28,
-//     ANIMATION: 16,
-//     COMEDY: 35,
-//     DRAMA: 18,
-//     FAMILY: 10751,
-//     FANTASY: 14,
-//     HORROR: 27,
-//     MYSTERY: 9648,
-//     ROMANCE: 10749,
-//     THRILLER: 53,
-//     WESTERN: 37,
-// }
 
-var searchFilter = {
+const searchFilter = {
     movieLength: "",
     yearsToNow: "",
     genres: [],
     isAdult: false,
 }
 
-var currentYear = dayjs().format('YYYY');
+const currentYear = dayjs().format('YYYY');
 var generatedMovies = []
-var youtubeVideoUrl = "";
+var moviePool = []
+var trailerUrl = "";
 
 $(document).ready(function () {
     $('.modal').modal({
@@ -35,7 +23,7 @@ $(document).ready(function () {
 $(document).ready(function () {
     $('.sidenav').sidenav();
 });
-    
+
 function getRandomFive(dataResult) {
     var randomIndex = Math.floor(Math.random() * dataResult.length);
     generatedMovies.push(dataResult[randomIndex])
@@ -56,10 +44,10 @@ var getTMDBApi = function (isAdult, yearsToNow, runTimeMinutes, genres) {
             if (response.ok) {
                 // console.log(response);
                 response.json().then(function (data) {
-                    // data.results.splice(4, 15)
-                    // console.log(data);
+                    moviePool = data.results
+                    console.log(moviePool);
                     for (let i = 0; i < 5; i++) {
-                        getRandomFive(data.results)
+                        getRandomFive(moviePool)
                     }
                     getTMDBDetail(generatedMovies)
                 });
@@ -82,12 +70,12 @@ function getTMDBDetail(movieData) {
         saveFullData(generatedMovies)
     }
 }
-// push objects to an array to save in local storage
+// Save the movie infos in local storage
 function saveFullData(localMovieData) {
     var movieInfoString = JSON.stringify(localMovieData);
     localStorage.setItem("localMovieData", movieInfoString);
 }
-
+// Save the search filter to local storage
 function saveSearchFilter(searchFilter) {
     var searchFilterString = JSON.stringify(searchFilter);
     localStorage.setItem("localSearchFilter", searchFilterString);
@@ -96,7 +84,6 @@ function saveSearchFilter(searchFilter) {
 // This function to create a template to add card elements in html file
 function createCardComponents(movieInfo) {
     $(".cardContainer").append(`
-
         <div class="col s12 m6 l2">
             <div class="card large card-panel grey lighten-5">
                 <div class="card-image">
@@ -110,35 +97,34 @@ function createCardComponents(movieInfo) {
                 </div>
             </div>
         </div>
-  
     `);
 }
 
-// Added a clickevent to all trailer buttons
+// Generate show trailer buttons and add clickevent to them
 function addButtonsPlusClickEvents(returnValue) {
-    var trailerBtnEl = $('<button>')
-    trailerBtnEl.addClass('waves-effect waves-light btn-small trailer-btn modal-trigger')
-    trailerBtnEl.attr('href', '#modal1')
-    trailerBtnEl.text('Watch trailer')
+    var showTrailerBtnEl = $('<button>')
+    showTrailerBtnEl.addClass('waves-effect waves-light btn-small trailer-btn modal-trigger')
+    showTrailerBtnEl.attr('href', '#modal1')
+    showTrailerBtnEl.text('Watch trailer')
     var iconEl = $('<i>')
     iconEl.addClass('material-icons left')
     iconEl.text('ondemand_video')
-    trailerBtnEl.append(iconEl)
-    returnValue.append(trailerBtnEl)
-    returnValue.click(showYouTubeTrailer)
+    showTrailerBtnEl.append(iconEl)
+    returnValue.append(showTrailerBtnEl)
+    returnValue.click(showTrailer)
 }
-
+// To stop the trialer from playing
 function stopVideo() {
     console.log($('iframe'))
     $('#video-player').removeAttr('src')
 }
-
-function addVideoPlayer(youtubeVideoUrl) {
-    $("#video-player").attr('src', youtubeVideoUrl)
+// Add trailer Url to iframe so that it will show trailer
+function addTrailerUrl(trailerUrl) {
+    $("#video-player").attr('src', trailerUrl)
 }
 
 // Creat a function that will locate the movie title and pass it to a search in youtube API
-function showYouTubeTrailer(event) {
+function showTrailer(event) {
     var targetBtn = event.target;
     if (!$(targetBtn).is('.trailer-btn')) {
         return;
@@ -158,7 +144,7 @@ function getYoutubeApi(movieTitle) {
             if (response.ok) {
                 response.json().then(function (data) {
                     // console.log(data);
-                    generateYoutubeVideoUrl(data)
+                    getTrailerUrl(data)
                 });
             } else {
                 alert('Error: ' + response.statusText);
@@ -168,15 +154,34 @@ function getYoutubeApi(movieTitle) {
             console.log('something is wrong');
         });
 }
-function generateYoutubeVideoUrl(youtubeApi) {
-    var getYoutubeVideoID = youtubeApi.items[0].id.videoId;
-    youtubeVideoUrl = "https://www.youtube.com/embed/" + getYoutubeVideoID
-    console.log(youtubeVideoUrl)
-    addVideoPlayer(youtubeVideoUrl)
+// Use the data from youtube API to generate the viedo ID and url
+function getTrailerUrl(youtubeApi) {
+    var trailerID = youtubeApi.items[0].id.videoId;
+    trailerUrl = "https://www.youtube.com/embed/" + trailerID
+    console.log(trailerUrl)
+    addTrailerUrl(trailerUrl)
 }
+// Set the position of the close button of the player
 function adjustCloseBtn() {
     var closeBtnEl = $('#closebutton')
     closeBtnEl.css({ 'position': 'absolute', 'top': '-30px', 'right': '-30px' })
+}
+
+// Show the next 5 different movies
+function showNext5() {
+    console.log(moviePool)
+    var cardContainerEl = $('#search-results')
+    if (moviePool.length === 0) {
+        $('#modal2').modal('open')
+        return
+    } else {
+        if (cardContainerEl) { cardContainerEl.empty() }
+        if (generatedMovies) { generatedMovies = [] }
+        for (let i = 0; i < 5; i++) {
+            getRandomFive(moviePool)
+        }
+        getTMDBDetail(generatedMovies)
+    }
 }
 
 // -------------------------------------------------------------------------------------
@@ -245,7 +250,7 @@ var questionBox = $('#questionsContainer')
 var startButton = $('#startBtn')
 var questionEl = $('#question')
 var answerBtn = $('#answer-buttons')
-var resetBtn = $('#reset')
+var resetBtn = $('.reset-btn')
 var answerEl = []
 var resultsEl = $("#results")
 var questionIndex = 0
@@ -358,7 +363,7 @@ function allDone() {
 
 
 
-
+$('#show5more').click(showNext5)
 
 $(resetBtn).click(function () {
     location.reload();
