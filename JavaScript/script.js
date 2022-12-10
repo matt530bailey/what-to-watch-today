@@ -247,17 +247,22 @@ var questionsArray = [
     }
 ]
 
+//variables
 var welcomeEl = $('#container')
 var questionBox = $('#questionsContainer')
 var startButton = $('#startBtn')
 var questionEl = $('#question')
 var answerBtn = $('#answer-buttons')
+var resetBtn =  $('#reset')
 var answerEl = []
 var resultsEl = $("#results")
 var questionIndex = 0
 var ansArray = [];
 var ansScore = [];
+
+// after start button is pressed
 var startGame = function () {
+
     //add classes to show/hide start and quiz screen
     welcomeEl.addClass('hide');
     welcomeEl.removeClass('show');
@@ -290,6 +295,7 @@ function displayQuestion() {
     }
 }
 
+//what happens when answer is chosen
 function selectAnswer(event) {
     event.preventDefault();
     console.log(event.target.innerText)
@@ -311,6 +317,7 @@ function selectAnswer(event) {
 
     console.log(ansScore)
 
+    // end cycle of questions
     if (questionsArray.length < (questionIndex + 1)) {
         allDone();
         saveSearchFilter(searchFilter)
@@ -323,29 +330,29 @@ function selectAnswer(event) {
     console.log("totalScore = " + totalScore)
 
 
-
+// If statement to get genres.  If user chooses a genre on question 3, it overwrites the chosen genre based on the first two questions.
     if (totalScore > 5) {
         searchFilter.genres = ansScore[2]
         console.log(ansScore[2])
     } else if (totalScore > 4) {
 
-        searchFilter.genres = genreCodeList.ROMANCE// console.log("romance")
+        searchFilter.genres = genreCodeList.ROMANCE
     } else if (totalScore > 3) {
 
-        searchFilter.genres = genreCodeList.ACTION// console.log("action")
+        searchFilter.genres = genreCodeList.ACTION
     } else if (totalScore >= 2) {
 
         searchFilter.genres = genreCodeList.ANIMATION
         console.log(genreCodeList.ANIMATION)
     } else if (totalScore < 2) {
 
-        searchFilter.genres = genreCodeList.COMEDY// console.log("com
+        searchFilter.genres = genreCodeList.COMEDY
     }
 
 
 }
 
-
+// once the questions are answered
 function allDone() {
     var redirectUrl = './searchResults.html';
 
@@ -361,7 +368,9 @@ function allDone() {
 
 
 
-
+$(resetBtn).click(function() {
+    location.reload();
+})
 
 console.log(ansArray)
 

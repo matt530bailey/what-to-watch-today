@@ -39,3 +39,14 @@
 .header{
     margin-bottom: 20px;
 }
+
+#results{
+    text-align: center;
+}
+
+#reset{
+
+    margin-bottom: 1%;
+    margin-top: 5%;
+    text-align: center;
+}
