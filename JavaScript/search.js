@@ -189,12 +189,14 @@ function showNext5() {
 
 
 // excute functions
-getTMDBApi()
+$('.reset-btn').click(function () {
+    document.location.replace(redirectHomepage);
+})
 adjustCloseBtn()
 $('#show5more').click(showNext5)
 
-$(resetBtn).click(function () {
-    document.location.replace(redirectHomepage);
+$(document).ready(function () {
+getTMDBApi(searchFilter.isAdult, searchFilter.yearsToNow, searchFilter.movieLength, searchFilter.genres)
 })
 
 // creatCardsFromStorage()
