@@ -1,16 +1,16 @@
-const genreCodeList = {
-    ACTION: 28,
-    ANIMATION: 16,
-    COMEDY: 35,
-    DRAMA: 18,
-    FAMILY: 10751,
-    FANTASY: 14,
-    HORROR: 27,
-    MYSTERY: 9648,
-    ROMANCE: 10749,
-    THRILLER: 53,
-    WESTERN: 37,
-}
+// const genreCodeList = {
+//     ACTION: 28,
+//     ANIMATION: 16,
+//     COMEDY: 35,
+//     DRAMA: 18,
+//     FAMILY: 10751,
+//     FANTASY: 14,
+//     HORROR: 27,
+//     MYSTERY: 9648,
+//     ROMANCE: 10749,
+//     THRILLER: 53,
+//     WESTERN: 37,
+// }
 
 var searchFilter = {
     movieLength: "",
@@ -19,16 +19,8 @@ var searchFilter = {
     isAdult: false,
 }
 
-// var testingSearchFilter = {
-//     movieLength: "200",
-//     yearsToNow: "15",
-//     genres: [28, 9648],
-//     isAdult: false,
-// }
-
 var currentYear = dayjs().format('YYYY');
-
-var localMovieData = [];
+var generatedMovies = []
 var youtubeVideoUrl = "";
 
 $(document).ready(function () {
@@ -43,6 +35,17 @@ $(document).ready(function () {
 $(document).ready(function () {
     $('.sidenav').sidenav();
 });
+    
+function getRandomFive(dataResult) {
+    var randomIndex = Math.floor(Math.random() * dataResult.length);
+    generatedMovies.push(dataResult[randomIndex])
+    dataResult.splice(randomIndex, 1)
+    console.log(randomIndex)
+    console.log(dataResult)
+    console.log(generatedMovies)
+    return generatedMovies
+}
+
 
 // get rough data from TMDB API
 var getTMDBApi = function (isAdult, yearsToNow, runTimeMinutes, genres) {
@@ -53,9 +56,12 @@ var getTMDBApi = function (isAdult, yearsToNow, runTimeMinutes, genres) {
             if (response.ok) {
                 // console.log(response);
                 response.json().then(function (data) {
-                    data.results.splice(4, 15)
-                    console.log(data);
-                    getTMDBDetail(data)
+                    // data.results.splice(4, 15)
+                    // console.log(data);
+                    for (let i = 0; i < 5; i++) {
+                        getRandomFive(data.results)
+                    }
+                    getTMDBDetail(generatedMovies)
                 });
             } else {
                 alert('Error: ' + response.statusText);
@@ -68,15 +74,12 @@ var getTMDBApi = function (isAdult, yearsToNow, runTimeMinutes, genres) {
 
 // A function to get more detailed data from TMDB API (the length of the movie)
 function getTMDBDetail(movieData) {
-    for (let i = 0; i < movieData.results.length; i++) {
-        var movieResult = movieData.results[i]
-        console.log(movieResult);
-        console.log(localMovieData.length)
-        // generateInfo(movieResult);
-        createCardComponents(movieResult)
-        addButtonsPlusClickEvents($("#" + localMovieData.length));
-        localMovieData.push(movieResult);
-        saveFullData(localMovieData)
+    for (let i = 0; i < movieData.length; i++) {
+        var movieID = movieData[i].id
+        console.log(movieID);
+        createCardComponents(movieData[i])
+        addButtonsPlusClickEvents($("#" + movieID));
+        saveFullData(generatedMovies)
     }
 }
 // push objects to an array to save in local storage
@@ -89,23 +92,12 @@ function saveSearchFilter(searchFilter) {
     var searchFilterString = JSON.stringify(searchFilter);
     localStorage.setItem("localSearchFilter", searchFilterString);
 }
-// function generateInfo(movieData) {
-//     // getting movie info from TMDB API and save in an object
-//     movieInfo.title = movieData.title
-//     movieInfo.overview = movieData.overview
-//     movieInfo.releaseDate = movieData.release_date
-//     movieInfo.rating = movieData.vote_average
-//     movieInfo.posterPath = 'https://www.themoviedb.org/t/p/w300_and_h450_bestv2/' + movieData.poster_path
-//     movieInfo.movieID = movieData.id
-//     return movieInfo
-//     // console.log(movieInfo)
-// }
 
 // This function to create a template to add card elements in html file
 function createCardComponents(movieInfo) {
     $(".cardContainer").append(`
 
-        <div class="col s10 m5 l2">
+        <div class="col s12 m6 l2">
             <div class="card large card-panel grey lighten-5">
                 <div class="card-image">
                     <img src='https://www.themoviedb.org/t/p/w300_and_h450_bestv2/${movieInfo.poster_path}'>
@@ -114,7 +106,7 @@ function createCardComponents(movieInfo) {
                 <div class="card-content" style="overflow:scroll; line-height:1.5">
                     <p>${movieInfo.overview}</p>
                 </div>
-                <div class="card-action" id="${localMovieData.length}">
+                <div class="card-action" id="${movieInfo.id}">
                 </div>
             </div>
         </div>
@@ -159,7 +151,7 @@ function showYouTubeTrailer(event) {
 
 // Added a function to get movie data from youtube API
 function getYoutubeApi(movieTitle) {
-    var requestUrl = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&key=AIzaSyD1uynd7oG6CN6SYji9ikR02DcBQbDPy8w&order=relevance&q=' + movieTitle + ' trailer&type=video&videoDefinition=high&maxResults=1'
+    var requestUrl = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&key=AIzaSyD1uynd7oG6CN6SYji9ikR02DcBQbDPy8w&order=relevance&q=' + movieTitle + ' movietrailer&type=video&videoDefinition=high&maxResults=1'
     console.log(requestUrl)
     fetch(requestUrl)
         .then(function (response) {
@@ -253,7 +245,7 @@ var questionBox = $('#questionsContainer')
 var startButton = $('#startBtn')
 var questionEl = $('#question')
 var answerBtn = $('#answer-buttons')
-var resetBtn =  $('#reset')
+var resetBtn = $('#reset')
 var answerEl = []
 var resultsEl = $("#results")
 var questionIndex = 0
@@ -330,7 +322,7 @@ function selectAnswer(event) {
     console.log("totalScore = " + totalScore)
 
 
-// If statement to get genres.  If user chooses a genre on question 3, it overwrites the chosen genre based on the first two questions.
+    // If statement to get genres.  If user chooses a genre on question 3, it overwrites the chosen genre based on the first two questions.
     if (totalScore > 5) {
         searchFilter.genres = ansScore[2]
         console.log(ansScore[2])
@@ -368,7 +360,7 @@ function allDone() {
 
 
 
-$(resetBtn).click(function() {
+$(resetBtn).click(function () {
     location.reload();
 })
 
