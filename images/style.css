@@ -6,7 +6,7 @@
     text-align: center;
     background-image: url("../images/movie2.jpeg") !important;
     background-size: cover;
-    padding: 150px;
+    padding: 200px;
     color: white;
     margin:0%;
     background-repeat: no-repeat;
@@ -33,13 +33,12 @@
 .ansbtn{
     color: white;
     background-color: rgb(15, 132, 132);
-    padding: 10px;
-    margin: 1px;
+    padding: 2%;
+    margin: 3px;
 }
 
 #question{
-    font-size: 30px;
-    margin-bottom: 1px;
+    font-size: 30px;;
 }
 
 .header{
