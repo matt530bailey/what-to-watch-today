@@ -53,7 +53,7 @@
                 you today</p>
 
             <button id="startBtn" class="btn waves-effect waves-light teal lighten-1">Start</button>
-            
+
         </div>
 
     </section>
@@ -70,32 +70,45 @@
     </section>
     <!-- results -->
 
-    <section id="results" class="hide">
+    <section id="results" class="hide" style="display: inline">
         <div class="lastContainer">
-            <div class="results"></div>
+            <!-- <div class="results"></div> -->
         </div>
-        <button id="reset" class= "btn waves-effect waves-light teal lighten-1"> RESTART</button>
+        <div class="showmoreBtns">
+            <button id="show5more" class="btn waves-effect waves-light teal lighten-1"> Don't like them? Show 5
+                more!</button><button id="reset" class="reset-btn btn waves-effect waves-light teal lighten-1">
+                RESTART</button>
+        </div>
+        </div>
     </section>
 
     <main>
         <!-- This is a section for search results -->
         <div class="row">
-            <div class="col s1 m1 l1"></div>
-            <div class="col s1 m1 l1"></div>
-            <div class="col s10 m10 l10">
-                <section class='cardContainer row'>
+            <!-- <div class="col s10 m10 l10"> -->
+            <section id="search-results" class='cardContainer row'>
 
-                </section>
-            </div>
+                <!-- </section> -->
+        </div>
         </div>
         <!-- This is a section for modal to play trailers -->
         <section>
             <!-- Modal Structure -->
-            <div id="modal1" class="modal" style="padding:0px; width:100%; height:auto; overflow:visible;">
+            <div id="modal1" class="modal" style="padding:0px; width:450px; height:300px; overflow:visible;">
                 <a class="btn-floating btn-small waves-effect waves-light red" id="closebutton"><i
                         class="material-icons modal-close">close</i></a>
-                <iframe id="video-player" frameborder="0" style="width:100%px; height:auto; overflow:visible;" src="">
+                <iframe id="video-player" frameborder="0" style="width:450px; height:300px; overflow:visible;" src="">
                 </iframe>
+            </div>
+            <div id="modal2" class="modal">
+                <div class="modal-content  ">
+                    <h2>Sorry, we're gunning out of movies. Do you wanna try again?</h2>
+                </div>
+                <div class="modal-footer">
+                    <a href="#!" class="modal-close waves-effect waves-green btn">Go Back</a>
+                    <a href="#!" class="reset-btn modal-close waves-effect waves-green btn">Start Over</a>
+                </div>
+            </div>
             </div>
         </section>
     </main>
