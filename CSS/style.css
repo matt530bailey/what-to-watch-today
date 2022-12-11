@@ -1,3 +1,5 @@
+
+/* shows background pictire of movie */
 #container
 {
     box-sizing: border-box;
@@ -17,7 +19,7 @@
 #welcomeTitle{
     font-size:40px
 }
-
+/* for questions to show background picture of a collage of movies */
 #questionsContainer{
     display: block;
     text-align: center;
@@ -50,6 +52,8 @@
 #reset{
 
     margin-bottom: 1%;
-    margin-top: 5%;
+    margin-top: 1%;
+    margin-left: 2%;
     text-align: center;
 }
+
