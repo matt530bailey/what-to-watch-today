@@ -47,7 +47,7 @@ var questionsArray = [
     {
         q: 'What genre would you like?',
         a: [
-
+            { text: 'Any 🤷‍♂️', value: 0 },
             { text: 'Action', value: 28 },
             { text: 'Comedy', value: 35 },
             { text: 'Fantasy', value: 14 },
@@ -56,8 +56,8 @@ var questionsArray = [
             { text: 'Thriller', value: 53 },
             { text: 'Western', value: 37 },
             { text: 'Drama', value: 18 },
-            { text: 'Romance', value: 10749 },
-            { text: 'Any 🤷‍♂️', value: 0 },
+            { text: 'Romance', value: 10749 }
+            
 
         ]
     },
