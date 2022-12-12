@@ -101,6 +101,7 @@ var startGame = function () {
     welcomeEl.removeClass('show');
     questionBox.removeClass('hide');
     questionBox.addClass('show');
+    localStorage.clear()
     displayQuestion()
 }
 $(startButton).on('click', startGame)
