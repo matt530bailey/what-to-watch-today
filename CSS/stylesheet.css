@@ -1,56 +1,55 @@
-
 /* shows background pictire of movie */
-#container
-{
+#container {
     box-sizing: border-box;
     text-align: center;
     background-image: url("../images/movie2.jpeg") !important;
     background-size: cover;
     padding: 150px;
     color: white;
-    margin:0%;
+    margin: 0%;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    
+
 
 
 }
 
-#welcomeTitle{
-    font-size:40px
+#welcomeTitle {
+    font-size: 40px
 }
+
 /* for questions to show background picture of a collage of movies */
-#questionsContainer{
+#questionsContainer {
     display: block;
     text-align: center;
     background-image: url("../images/moviebackground.jpg") !important;
-    padding:150px;
+    padding: 150px;
     color: white;
 
 
 }
 
-.ansbtn{
+.ansbtn {
     color: white;
     background-color: rgb(15, 132, 132);
     padding: 10px;
     margin: 1px;
 }
 
-#question{
+#question {
     font-size: 30px;
     margin-bottom: 1px;
 }
 
-.header{
+.header {
     margin-bottom: 20px;
 }
 
-#results{
+#results {
     text-align: center;
 }
 
-#reset{
+#reset {
 
     margin-bottom: 1%;
     margin-top: 1%;
@@ -58,3 +57,26 @@
     text-align: center;
 }
 
+@media (820px <= width <=1100px) {
+    #modal1,
+    #video-player {
+        width: 600px;
+        height: 375px;
+    }
+}
+
+@media (450px <= width < 820px) {
+    #modal1,
+    #video-player {
+        width: 400px;
+        height: 250px;
+    }
+}
+
+@media (300px <= width < 450px) {
+    #modal1,
+    #video-player {
+        width: 280px;
+        height: 175px;
+    }
+}

@@ -2,6 +2,11 @@ const redirectHomepage = "./index.html"
 const searchString = localStorage.getItem("localSearchFilter");
 const searchFilter = JSON.parse(searchString)
 const currentYear = dayjs().format('YYYY');
+const modal1El = $('#modal1');
+const playerEl = $('#video-player')
+const isLarge = window.matchMedia("(820px <= width < 1100px)")
+const isMedium = window.matchMedia("(450px <= width < 820px)")
+const isSmall = window.matchMedia("(300px <= width < 450px)")
 var generatedMovies = []
 var moviePool = []
 var trailerUrl = "";
@@ -25,7 +30,7 @@ $('.reset-btn').click(function () {
 
 // Randomly select 4 items from search result to save in and delete them from the movie Pool
 function getRandomFour(dataResult) {
-    if(generatedMovies){generatedMovies = []}
+    if (generatedMovies) { generatedMovies = [] }
     for (let i = 0; i < 4; i++) {
         var randomIndex = Math.floor(Math.random() * dataResult.length);
         generatedMovies.push(dataResult[randomIndex])
@@ -51,7 +56,7 @@ var getTMDBApi = function (isAdult, yearsToNow, runTimeMinutes, genres) {
                     moviePool = data.results
                     getRandomFour(moviePool)
                     console.log(moviePool);
-                    
+
                 });
             } else {
                 alert('Error: ' + response.statusText);
@@ -96,7 +101,7 @@ function generateFromStorage() {
         loadMoviePool()
         loadGeneratedMovies()
         getMovieId(generatedMovies)
-    } else {getTMDBApi(searchFilter.isAdult, searchFilter.yearsToNow, searchFilter.movieLength, searchFilter.genres)}
+    } else { getTMDBApi(searchFilter.isAdult, searchFilter.yearsToNow, searchFilter.movieLength, searchFilter.genres) }
 }
 
 // This function to create a template to add card elements in html file
@@ -197,14 +202,55 @@ function showNext4() {
         return
     } else {
         // Clear the card container before generate new cards
-        if(cardContainerEl) {cardContainerEl.empty()}
-        if(generatedMovies) {generatedMovies = []}
+        if (cardContainerEl) { cardContainerEl.empty() }
+        if (generatedMovies) { generatedMovies = [] }
         console.log(generatedMovies)
         getRandomFour(moviePool)
     }
 }
+
+function adjustSize(element, width, height) {
+    element.attr('style', 'width:' + width + ';height:' + height + ';overflow:visible')
+}
+
+
+function mediaQueryL(large, medium, small) {
+    if (large.matches) { // If media query matches
+        adjustSize(modal1El, 600, 375)
+        adjustSize(playerEl, 600, 375)
+        // document.body.style.backgroundColor = "yellow";
+    }
+    else if (medium.matches) { 
+        adjustSize(modal1El, 400, 250)
+        adjustSize(playerEl, 400, 250)
+        // document.body.style.backgroundColor = "pink";
+    }
+    else if (small.matches) {
+        adjustSize(modal1El, 280, 175)
+        adjustSize(playerEl, 280, 175)
+        document.body.style.backgroundColor = "black";
+    } 
+}
+// function mediaQueryM(medium) {
+//     if (medium.matches) { 
+//         adjustSize(modal1El, 400, 250)
+//         adjustSize(playerEl, 400, 250)
+//     } 
+// }
+// function mediaQueryS(small) {
+//     if (small.matches) {
+//         adjustSize(modal1El, 280, 175)
+//         adjustSize(playerEl, 280, 175)
+//     }
+// }
 // -------------------------------------------------------------------------------------
 // excute functions
 adjustCloseBtn()
 $('#showmore').click(showNext4)
 generateFromStorage()
+mediaQueryL(isLarge, isMedium, isSmall) 
+// mediaQueryM(isMedium)
+// mediaQueryS(isSmall)
+isLarge.addListener(mediaQueryL)
+isMedium.addListener(mediaQueryL)
+isSmall.addListener(mediaQueryL)
