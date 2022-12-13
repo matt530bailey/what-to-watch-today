@@ -1,4 +1,16 @@
-
+const genreCodeList = {
+    ACTION: 28,
+    ANIMATION: 16,
+    COMEDY: 35,
+    DRAMA: 18,
+    FAMILY: 10751,
+    FANTASY: 14,
+    HORROR: 27,
+    MYSTERY: 9648,
+    ROMANCE: 10749,
+    THRILLER: 53,
+    WESTERN: 37,
+}
 const searchFilter = {
     movieLength: "",
     yearsToNow: "",
@@ -178,7 +190,7 @@ function selectAnswer(event) {
         searchFilter.genres = genreCodeList.ANIMATION
         console.log(genreCodeList.ANIMATION)
     } else if (totalScore < 2) {
-
+        console.log(totalScore)
         searchFilter.genres = genreCodeList.COMEDY
     }
 
