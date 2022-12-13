@@ -35,7 +35,7 @@ For example:
 
 4.  Click on the button "Watch Trailer" to view the trailer from Youtube.  Close the trailer and you can click on the others to view them!
 
-5.  Click on the "Don't Like them? Show 5 more" to view more choices, or answer the questions again using the "Restart" button.
+5.  Click on the "Don't Like them? Show more" to view more choices (button works three times and then gives you the option to go back or start over ), or answer the questions again using the "Restart" button.
 
 6.  Want to search and get more information on the movies.  Links are provided on the top of the page for YouTube, RottenTomatoes, and IMDB.
 
