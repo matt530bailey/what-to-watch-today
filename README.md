@@ -20,7 +20,7 @@ Also provide are links on the top for YouTube, RottenTomatoes, and IMDB to searc
     - https://youtube.googleapis.com
 
 ## Directions
-Go to http://127.0.0.1:5501/index.html
+Go to https://matt530bailey.github.io/what-to-watch-today/index.html
 
 1.  Click on the Start button.
 ![alt text](./images/welcome_page.png)
@@ -45,6 +45,6 @@ For example:
 
 ## GitHub Link
 
-https://github.com/matt530bailey/renameLater
+https://github.com/matt530bailey/what-to-watch-today
 
 
